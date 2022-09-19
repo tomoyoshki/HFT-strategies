@@ -1,5 +1,6 @@
-# group_01_project
+# FIN 556 Group 1 Project
 
-## Team Member
+## Team Members
 
-Tommy Kimura - tkimura4
+Yihong Jian - yihongj2@illinois.edu
+Tomoyoshi Kimura - tkimura4@illinois.edu (Team Leader)
