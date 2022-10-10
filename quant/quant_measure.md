@@ -13,8 +13,6 @@
 \text{Sharpe Ratio} = {\text{Return of portfolio} - \text{risk-free rate} \over \text{Standard Deviation of the portfolio's excess return}}
 ```
 
-
-
 ### Maximum Drowndown
 
 ```math

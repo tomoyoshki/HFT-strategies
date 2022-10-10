@@ -31,6 +31,3 @@ def maximum_drowndown(security):
         array representing the security to perform analysis on
     '''
     return (security.min() - security.max()) / security.max()
-
-if __name__ == "__main__":
-    print("Hello World")
