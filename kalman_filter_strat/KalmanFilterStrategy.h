@@ -63,6 +63,13 @@ public: /* from IEventCallback */
      */ 
     void OnParamChanged(StrategyParam& param);
 
+public:
+    KalmanFilter * kf;
+    unsigned long trade_number;
+    bool kalman_initialized;
+    Eigen::VectorXd * x0;
+    Eigen::VectorXd * y;
+
 private:  // Helper functions specific to this strategy
     void AdjustPortfolio();
     void SendOrder(const Instrument* instrument, int trade_size);
