@@ -1,1 +1,4 @@
 /.vscode
+data/
+.DS_store
+.ipynb*
