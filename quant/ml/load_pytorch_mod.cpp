@@ -2,6 +2,8 @@
 #include <torch/script.h>
 #include <iostream>
 #include <memory>
+/* This file serves as a demo for loading and accessing Pytroch model in C++ */
+
 /* 
   Directions:
     1. Install Cmake3 and LibTorch.
