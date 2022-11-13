@@ -1,125 +1,92 @@
+/**
+* Taken from https://github.com/hmartiro/kalman-cpp/blob/master/kalman.cpp
+* Kalman filter implementation using Eigen. Based on the following
+* introductory paper:
+*
+*     http://www.cs.unc.edu/~welch/media/pdf/kalman_intro.pdf
+*
+* @author: Hayk Martirosyan
+* @date: 2014.11.15
+*/
+
+#include <eigen/Eigen/Dense>
+
 #pragma once
 
-#ifndef _STRATEGY_STUDIO_LIB_EXAMPLES_SIMPLE_MOMENTUM_STRATEGY_H_
-#define _STRATEGY_STUDIO_LIB_EXAMPLES_SIMPLE_MOMENTUM_STRATEGY_H_
-
-#ifdef _WIN32
-    #define _STRATEGY_EXPORTS __declspec(dllexport)
-#else
-    #ifndef _STRATEGY_EXPORTS
-    #define _STRATEGY_EXPORTS
-    #endif
-#endif
-
-#include <Strategy.h>
-#include <MarketModels/Instrument.h>
-
-#include <string>
-#include <unordered_map>
-#include <iostream>
-#include <algorithm> 
-
-#include "kalman_filter.h"
-
-using namespace RCM::StrategyStudio;
-using std::string;
-using std::unordered_map;
-using std::max;
-using std::min;
-
-class KFStrategy : public Strategy {
-public:
-    KFStrategy(StrategyID strategyID,
-        const std::string& strategyName,
-        const std::string& groupName);
-    ~KFStrategy();
-
-
-public: /* from IEventCallback */
-    /**
-     * This event triggers whenever a Bar interval completes for an instrument
-     */ 
-    virtual void OnBar(const BarEventMsg& msg);
-
-
-    /**
-     * This event triggers whenever a signal trade trend is detected
-     */ 
-    virtual void OnTrade(const TradeDataEventMsg& msg);
-
-    /**
-     * This function detect completed orders and compute quantityHeld
-     */ 
-    void OnOrderUpdate(const OrderUpdateEventMsg& msg);
-    /**
-     * 
-     *  Perform additional reset for strategy state 
-     */
-    void OnResetStrategyState();
-
-    /**
-     * Notifies strategy for every succesfull change in the value of a strategy parameter.
-     *
-     * Will be called any time a new parameter value passes validation, including during strategy initialization when default parameter values
-     * are set in the call to CreateParam and when any persisted values are loaded. Will also trigger after OnResetStrategyState
-     * to remind the strategy of the current parameter values.
-     */ 
-    void OnParamChanged(StrategyParam& param);
+class KalmanFilter {
 
 public:
-    KalmanFilter * kf;
-    unsigned long trade_number;
-    bool kalman_initialized;
-    Eigen::VectorXd * x0;
-    Eigen::VectorXd * y;
-    long amount;
 
-private:  // Helper functions specific to this strategy
-    void AdjustPortfolio();
-    void SendOrder(const Instrument* instrument, int trade_size);
+  /**
+  * Create a Kalman filter with the specified matrices.
+  *   A - System dynamics matrix
+  *   C - Output matrix
+  *   Q - Process noise covariance
+  *   R - Measurement noise covariance
+  *   P - Estimate error covariance
+  */
+  KalmanFilter(
+      double dt,
+      const Eigen::MatrixXd& A,
+      const Eigen::MatrixXd& C,
+      const Eigen::MatrixXd& Q,
+      const Eigen::MatrixXd& R,
+      const Eigen::MatrixXd& P
+  );
 
-private: /* from Strategy */
-    virtual void RegisterForStrategyEvents(StrategyEventRegister* eventRegister, DateType currDate); 
-    
-    /**
-     * Define any params for use by the strategy 
-     */     
-    virtual void DefineStrategyParams();
+  /**
+  * Create a blank estimator.
+  */
+  KalmanFilter();
 
+  /**
+  * Initialize the filter with initial states as zero.
+  */
+  void init();
+
+  /**
+  * Initialize the filter with a guess for initial states.
+  */
+  void init(double t0, const Eigen::VectorXd& x0);
+
+  /**
+  * Update the estimated state based on measured values. The
+  * time step is assumed to remain constant.
+  */
+  void update(const Eigen::VectorXd& y);
+
+  /**
+  * Update the estimated state based on measured values,
+  * using the given time step and dynamics matrix.
+  */
+  void update(const Eigen::VectorXd& y, double dt, const Eigen::MatrixXd A);
+
+  /**
+  * Return the current state and time.
+  */
+  Eigen::VectorXd state() { return x_hat; };
+  double time() { return t; };
+
+private:
+
+  // Matrices for computation
+  Eigen::MatrixXd A, C, Q, R, P, K, P0;
+
+  // System dimensions
+  int m, n;
+
+  // Initial and current time
+  double t0, t;
+
+  // Discrete time step
+  double dt;
+
+  // Is the filter initialized?
+  bool initialized;
+
+  // n-size identity
+  Eigen::MatrixXd I;
+
+  // Estimated states
+  Eigen::VectorXd x_hat, x_hat_new;
 };
-
-extern "C" {
-
-    _STRATEGY_EXPORTS const char* GetType() {
-        return "KFStrategy";
-    }
-
-    _STRATEGY_EXPORTS IStrategy* CreateStrategy(const char* strategyType,
-                                   unsigned strategyID,
-                                   const char* strategyName,
-                                   const char* groupName) {
-        if (strcmp(strategyType, GetType()) == 0) {
-            return *(new KFStrategy(strategyID, strategyName, groupName));
-        } else {
-            return NULL;
-        }
-    }
-
-    // must match an existing user within the system
-    _STRATEGY_EXPORTS const char* GetAuthor() {
-        return "dlariviere";
-    }
-
-    // must match an existing trading group within the system
-    _STRATEGY_EXPORTS const char* GetAuthorGroup() {
-        return "UIUC";
-    }
-
-    // used to ensure the strategy was built against a version of
-    // the SDK compatible with the server version
-    _STRATEGY_EXPORTS const char* GetReleaseVersion() {
-        return Strategy::release_version();
-    }
-}
-
-#endif
