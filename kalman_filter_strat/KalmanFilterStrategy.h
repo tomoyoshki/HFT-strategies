@@ -17,12 +17,15 @@
 #include <string>
 #include <unordered_map>
 #include <iostream>
+#include <algorithm> 
 
 #include "kalman_filter.h"
 
 using namespace RCM::StrategyStudio;
 using std::string;
 using std::unordered_map;
+using std::max;
+using std::min;
 
 class KFStrategy : public Strategy {
 public:
@@ -62,6 +65,14 @@ public: /* from IEventCallback */
      * to remind the strategy of the current parameter values.
      */ 
     void OnParamChanged(StrategyParam& param);
+
+public:
+    KalmanFilter * kf;
+    unsigned long trade_number;
+    bool kalman_initialized;
+    Eigen::VectorXd * x0;
+    Eigen::VectorXd * y;
+    long amount;
 
 private:  // Helper functions specific to this strategy
     void AdjustPortfolio();
