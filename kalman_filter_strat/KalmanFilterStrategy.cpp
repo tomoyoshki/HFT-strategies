@@ -65,7 +65,7 @@ void KFStrategy::OnTrade(const TradeDataEventMsg& msg) {
 
             float curr_eq = msg.trade().price() * msg.trade().size();
             // if the next state is greater than the current price, price is going to rise, buy!
-            float rel_diff = (current_state[0] - msg.trade().price) / msg.trade().price();
+            float rel_diff = (current_state[0] - msg.trade().price()) / msg.trade().price();
 
             std::cout << "Relative difference: " << rel_diff << std::endl;
             std::cout << "\tKalman: " << current_state.transpose() << std::endl;
