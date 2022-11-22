@@ -9,12 +9,22 @@
 // start_backtest 2022-04-01 2022-04-01 kf_2d_9 1
 // export_cra_file /home/vagrant/Desktop/strategy_studio/backtesting/backtesting-results/BACK_kf_test21_2022-10-29_220918_start_04-05-2022_end_04-05-2022.cra  /home/vagrant/Desktop/strategy_studio/backtesting/backtesting-cra-exports
 
+
+/* Set it to the path to where libtorch is downloaded. */
+const std::string path_to_model = "/home/vagrant/Desktop/strategy_studio/localdev/RCM/StrategyStudio/examples/strategies/TorchStrategy/saved_dummy_model.pt";
+const int current_trade = 0;
+
 TorchStrategy::TorchStrategy(StrategyID strategyID,
                     const std::string& strategyName,
                     const std::string& groupName):
     Strategy(strategyID, strategyName, groupName) {
-        tensor = torch::rand({2, 3});
-        std::cout << tensor << std::endl;
+    try {
+        // Deserialize the ScriptModule from a file using torch::jit::load().
+        model = torch::jit::load(path_to_model);
+    }
+    catch (const c10::Error& e) {
+        std::cerr << "error loading the model\n";
+    }
 }
 
 TorchStrategy::~TorchStrategy() {
@@ -28,7 +38,23 @@ void TorchStrategy::RegisterForStrategyEvents(
 }
 
 void TorchStrategy::OnTrade(const TradeDataEventMsg& msg) {
+    if (current_trade % 3000) {
+        try {
+            // Deserialize the ScriptModule from a file using torch::jit::load().
+            std::vector<torch::jit::IValue> inputs;
+            inputs.push_back(torch::ones({1, 3, 224, 224}));
 
+            // Execute the model and turn its output into a tensor.
+            at::Tensor output = model.forward(inputs).toTensor();;
+            std::cout << "Decision (0 for sell, 1 for buy):" <<output.index({0}) << ", with trade size: " << output.index({1}) <<"."<< std::endl;
+            
+            /* TODO: Handles buy or sell */
+        }
+        catch (const c10::Error& e) {
+            std::cerr << "error loading the model\n";
+        }
+    }
+    current_trade ++;
 }
 
 
