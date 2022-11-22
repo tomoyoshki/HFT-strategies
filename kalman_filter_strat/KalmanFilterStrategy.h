@@ -18,6 +18,7 @@
 #include <unordered_map>
 #include <iostream>
 #include <algorithm> 
+#include <memory>
 
 #include "kalman_filter.h"
 
@@ -26,6 +27,7 @@ using std::string;
 using std::unordered_map;
 using std::max;
 using std::min;
+using std::unique_ptr;
 
 class KFStrategy : public Strategy {
 public:
@@ -67,11 +69,11 @@ public: /* from IEventCallback */
     void OnParamChanged(StrategyParam& param);
 
 public:
-    KalmanFilter * kf;
+    unique_ptr<KalmanFilter> kf;
     unsigned long trade_number;
     bool kalman_initialized;
-    Eigen::VectorXd * x0;
-    Eigen::VectorXd * y;
+    unique_ptr<Eigen::VectorXd> x0;
+    unique_ptr<Eigen::VectorXd> y;
     long amount;
 
 private:  // Helper functions specific to this strategy

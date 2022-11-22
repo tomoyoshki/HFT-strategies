@@ -34,17 +34,16 @@ KFStrategy::KFStrategy(StrategyID strategyID,
     R << 2, 0, 0, 1;
     P << 10, 5, 2, 1;
 
-    kf = new KalmanFilter(1, A, C, Q, R, P);
+    kf = unique_ptr<KalmanFilter>(new KalmanFilter(1, A, C, Q, R, P));
     // kf = new KalmanFilter();
     kalman_initialized = false;
 
-    y = new Eigen::VectorXd(m);
+    y = unique_ptr<Eigen::VectorXd>(new Eigen::VectorXd(m));
 
     amount = 0;
 }
 
 KFStrategy::~KFStrategy() {
-    free(kf);
 }
 
 void KFStrategy::DefineStrategyParams() {
@@ -83,7 +82,7 @@ void KFStrategy::OnTrade(const TradeDataEventMsg& msg) {
             }
         }
     } else {
-        x0 = new Eigen::VectorXd(2);
+        x0 = unique_ptr<Eigen::VectorXd>(new Eigen::VectorXd(2));
         *x0 << msg.trade().price(), msg.trade().size();
         kf->init(0, *x0);
         kalman_initialized = true;
