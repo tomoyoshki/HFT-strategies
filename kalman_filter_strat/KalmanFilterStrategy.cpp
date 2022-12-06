@@ -4,9 +4,9 @@
 
 #include "KalmanFilterStrategy.h"
 
-
-// create_instance kf_2d_9 KFStrategy UIUC SIM-1001-101 dlariviere 1000000 -symbols SPY
-// start_backtest 2022-04-01 2022-04-01 kf_2d_9 1
+// cp KalmanFilterStrategy.so /home/vagrant/Desktop/strategy_studio/backtesting/strategies_dlls/
+// create_instance kf_test_kill_12 KFStrategy UIUC SIM-1001-101 dlariviere 1000000 -symbols SPY
+// start_backtest 2022-04-01 2022-04-09 kf_test_kill_12 0
 // export_cra_file /home/vagrant/Desktop/strategy_studio/backtesting/backtesting-results/BACK_kf_test21_2022-10-29_220918_start_04-05-2022_end_04-05-2022.cra  /home/vagrant/Desktop/strategy_studio/backtesting/backtesting-cra-exports
 
 KFStrategy::KFStrategy(StrategyID strategyID,
@@ -66,17 +66,22 @@ void KFStrategy::OnTrade(const TradeDataEventMsg& msg) {
             // if the next state is greater than the current price, price is going to rise, buy!
             float rel_diff = (current_state[0] - msg.trade().price()) / msg.trade().price();
 
-            std::cout << "Relative difference: " << rel_diff << std::endl;
-            std::cout << "\tKalman: " << current_state.transpose() << std::endl;
-            std::cout << "\tCurrent: " << msg.trade().price() << "\t" << msg.trade().size() << std::endl;
-            std::cout << "\tAmount: " << amount << std::endl;
+            // std::cout << "Relative difference: " << rel_diff << std::endl;
+            // std::cout << "\tKalman: " << current_state.transpose() << std::endl;
+            // std::cout << "\tCurrent: " << msg.trade().price() << "\t" << msg.trade().size() << std::endl;
+            // std::cout << "\tAmount: " << amount << std::endl;
 
 
             long order_size = msg.trade().size() > current_state[1] ? current_state[1] : msg.trade().size();
-            if ( rel_diff > 1e-5) {
+            double r = ((double) rand() / (RAND_MAX));
+            r = 1;
+            // if (r > 0.8) {
+            //     // std::cout << "R: " << r << std::endl;
+            // }
+            if ( rel_diff > 1e-5 && r > 0.8) {
                 this->SendOrder(&msg.instrument(), order_size);
                 amount += order_size;
-            } else if (rel_diff < -1e-5 && amount > 0) {
+            } else if (rel_diff < -1e-5 && amount > 0 && r > 0.9) {
                 this->SendOrder(&msg.instrument(), -1*min(order_size, amount));
                 amount -= min(order_size, amount);
             }
@@ -112,16 +117,16 @@ void KFStrategy::SendOrder(const Instrument* instrument, int trade_size) {
         (trade_size > 0) ? ORDER_SIDE_BUY : ORDER_SIDE_SELL,
         ORDER_TIF_DAY,
         ORDER_TYPE_LIMIT);
-    std::cout << "SendTradeOrder(): about to send new order for "
-                << trade_size
-                << " at $"
-                << price
-                << std::endl;
+    // std::cout << "SendTradeOrder(): about to send new order for "
+    //             << trade_size
+    //             << " at $"
+    //             << price
+    //             << std::endl;
     TradeActionResult tra = trade_actions()->SendNewOrder(params);
     if (tra == TRADE_ACTION_RESULT_SUCCESSFUL) {
-        std::cout << "Sending new trade order successful!" << std::endl;
+        // std::cout << "Sending new trade order successful!" << std::endl;
     } else {
-        std::cout << "Error sending new trade order..." << tra << std::endl;
+        // std::cout << "Error sending new trade order..." << tra << std::endl;
     }
 }
 
