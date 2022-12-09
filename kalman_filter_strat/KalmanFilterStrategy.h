@@ -20,6 +20,12 @@
 #include <algorithm> 
 #include <memory>
 
+#include <math.h>
+#include <iostream>
+#include <cassert>
+#include <ctime>
+
+
 #include "kalman_filter.h"
 
 using namespace RCM::StrategyStudio;
