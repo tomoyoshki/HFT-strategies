@@ -68,8 +68,6 @@ void KFStrategy::OnTrade(const TradeDataEventMsg& msg) {
     // if time is near the end of the trade, reset kalman filter, and sell everything
     if (date_tm.tm_hour == 19 && date_tm.tm_min >= 59 && kalman_initialized) {
         kalman_initialized = false;
-        this->SendOrder(&msg.instrument(), -1 * amount);
-        amount = 0;
         trade_number = 0;
         return;
     }
