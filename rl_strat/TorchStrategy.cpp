@@ -11,7 +11,7 @@
 
 
 /* Set it to the path to where libtorch is downloaded. */
-const std::string path_to_model = "/home/vagrant/Desktop/strategy_studio/localdev/RCM/StrategyStudio/examples/strategies/TorchStrategy/saved_dummy_model.pt";
+const std::string path_to_model = "/home/vagrant/ss/sdk/RCM/StrategyStudio/examples/strategies/TorchStrategy/saved_dummy_model.pt";
 int current_trade = 0;
 
 TorchStrategy::TorchStrategy(StrategyID strategyID,
@@ -38,7 +38,7 @@ void TorchStrategy::RegisterForStrategyEvents(
 }
 
 void TorchStrategy::OnTrade(const TradeDataEventMsg& msg) {
-    if (current_trade % 3000) {
+    if (current_trade % 3000 == 0) {
         try {
             // Deserialize the ScriptModule from a file using torch::jit::load().
             std::vector<torch::jit::IValue> inputs;
