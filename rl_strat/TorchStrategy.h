@@ -68,6 +68,7 @@ public: /* from IEventCallback */
 private:  // Helper functions specific to this strategy
     void AdjustPortfolio();
     void SendOrder(const Instrument* instrument, int trade_size);
+    void SendSimpleOrder(const Instrument* instrument, int trade_size);
 
 private: /* from Strategy */
     virtual void RegisterForStrategyEvents(StrategyEventRegister* eventRegister, DateType currDate); 

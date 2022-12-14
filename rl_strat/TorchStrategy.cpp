@@ -73,6 +73,36 @@ void TorchStrategy::OnBar(const BarEventMsg& msg) {
 void TorchStrategy::AdjustPortfolio() {
 }
 
+void MeanReversionStrategy::SendSimpleOrder(const Instrument* instrument,
+int trade_size) {
+    // send order two pennies more aggressive than BBO
+    m_aggressiveness = 0.02;
+    double last_trade_price = instrument->last_trade().price();
+    double price = trade_size > 0 ? last_trade_price + m_aggressiveness :
+    last_trade_price - m_aggressiveness;
+    OrderParams params(*instrument,
+        abs(trade_size),
+        price,
+        (instrument->type() == INSTRUMENT_TYPE_EQUITY) ? MARKET_CENTER_ID_IEX :
+        ((instrument->type() == INSTRUMENT_TYPE_OPTION) ?
+        MARKET_CENTER_ID_CBOE_OPTIONS : MARKET_CENTER_ID_CME_GLOBEX),
+        (trade_size > 0) ? ORDER_SIDE_BUY : ORDER_SIDE_SELL,
+        ORDER_TIF_DAY,
+        ORDER_TYPE_LIMIT);
+
+    std::cout << "SendSimpleOrder(): about to send new order for " <<
+     trade_size << " at $" << price << std::endl;
+    TradeActionResult tra = trade_actions()->SendNewOrder(params);
+    if (tra == TRADE_ACTION_RESULT_SUCCESSFUL) {
+        m_instrument_order_id_map[instrument] = params.order_id;
+        std::cout << "SendOrder(): Sending new order successful!" << std::endl;
+    } else {
+        std::cout << "SendOrder(): Error sending new order!!!" << tra
+        << std::endl;
+    }
+}
+
+
 void TorchStrategy::SendOrder(const Instrument* instrument, int trade_size) {
     
 }
