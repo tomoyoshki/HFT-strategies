@@ -38,7 +38,8 @@ void TorchStrategy::RegisterForStrategyEvents(
 }
 
 void TorchStrategy::OnTrade(const TradeDataEventMsg& msg) {
-    if (current_trade % 3000 == 0) {
+     // For lack of a better model, just execute an order every 6000 trades.
+     if (current_trade % 6000 == 0) {
         try {
             // Deserialize the ScriptModule from a file using torch::jit::load().
             std::vector<torch::jit::IValue> inputs;
@@ -73,10 +74,10 @@ void TorchStrategy::OnBar(const BarEventMsg& msg) {
 void TorchStrategy::AdjustPortfolio() {
 }
 
-void MeanReversionStrategy::SendSimpleOrder(const Instrument* instrument,
+void TorchStrategy::SendSimpleOrder(const Instrument* instrument,
 int trade_size) {
     // send order two pennies more aggressive than BBO
-    m_aggressiveness = 0.02;
+    double m_aggressiveness = 0.02;
     double last_trade_price = instrument->last_trade().price();
     double price = trade_size > 0 ? last_trade_price + m_aggressiveness :
     last_trade_price - m_aggressiveness;
@@ -94,7 +95,7 @@ int trade_size) {
      trade_size << " at $" << price << std::endl;
     TradeActionResult tra = trade_actions()->SendNewOrder(params);
     if (tra == TRADE_ACTION_RESULT_SUCCESSFUL) {
-        m_instrument_order_id_map[instrument] = params.order_id;
+        // m_instrument_order_id_map[instrument] = params.order_id;
         std::cout << "SendOrder(): Sending new order successful!" << std::endl;
     } else {
         std::cout << "SendOrder(): Error sending new order!!!" << tra

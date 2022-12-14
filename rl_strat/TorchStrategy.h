@@ -84,7 +84,7 @@ private: /* from Strategy */
 extern "C" {
 
     _STRATEGY_EXPORTS const char* GetType() {
-        return "TorchStartegy";
+        return "TorchStrategy";
     }
 
     _STRATEGY_EXPORTS IStrategy* CreateStrategy(const char* strategyType,
