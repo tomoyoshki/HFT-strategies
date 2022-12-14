@@ -47,12 +47,12 @@ void TorchStrategy::OnTrade(const TradeDataEventMsg& msg) {
             // Execute the model and turn its output into a tensor.
             at::Tensor output = model.forward(inputs).toTensor();;
             std::cout << "Decision (0 for sell, 1 for buy):" <<output.index({0}) << ", with trade size: " << output.index({1}) <<"."<< std::endl;
-            if (output.index({0}).bool()) {
-                int size = output.index({1}).int();
+            if (output.index({0}).item<bool>()) {
+                int size = output.index({1}).item<int>();
                 this->SendSimpleOrder(&msg.instrument(), size);
             } else {
                 // Sell. 
-                int size = output.index({1}).int();
+                int size = output.index({1}).item<int>();
                 this->SendSimpleOrder(&msg.instrument(), -1 * size);
             }
         }
