@@ -101,8 +101,15 @@ void DummyMLStrategy::OnTrade(const TradeDataEventMsg& msg) {
         at::Tensor output = model.forward(inputs).toTensor();;
 
         std::cout << "Decision (0 for sell, 1 for buy):" <<output.index({0}) << ", with trade size: " << output.index({1}) <<"."<< std::endl;
-        
         /* TODO: Handles buy or sell */
+        if (output.index({0}).bool()) {
+            int size = output.index({1}).int();
+            this->SendSimpleOrder(&msg.instrument(), size);
+        } else {
+            // Sell. 
+            int size = output.index({1}).int();
+            this->SendSimpleOrder(&msg.instrument(), -1 * size);
+        }
     }
     catch (const c10::Error& e) {
         std::cerr << "error loading the model\n";

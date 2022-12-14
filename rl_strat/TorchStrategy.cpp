@@ -12,7 +12,7 @@
 
 /* Set it to the path to where libtorch is downloaded. */
 const std::string path_to_model = "/home/vagrant/Desktop/strategy_studio/localdev/RCM/StrategyStudio/examples/strategies/TorchStrategy/saved_dummy_model.pt";
-const int current_trade = 0;
+int current_trade = 0;
 
 TorchStrategy::TorchStrategy(StrategyID strategyID,
                     const std::string& strategyName,

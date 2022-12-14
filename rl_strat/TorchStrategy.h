@@ -20,6 +20,7 @@
 #include <algorithm> 
 
 #include <torch/torch.h>
+#include <torch/script.h>
 
 using namespace RCM::StrategyStudio;
 
@@ -75,7 +76,8 @@ private: /* from Strategy */
      * Define any params for use by the strategy 
      */     
     virtual void DefineStrategyParams();
-
+    /* Pytorch model */
+    torch::jit::script::Module model;
 };
 
 extern "C" {
