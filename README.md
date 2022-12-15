@@ -10,33 +10,137 @@
 
 ## Project Description
 
-We will implement HFT strategies that trade on real-world market data using proprietary software Strategy Studio (SS) for the final project. This goal has several components: market data, strategy, analysis, and automation. The first component is data. Since SS does not have built-in data, we need to harvest our own for backtesting. Therefore, we will be downloading historic market data from IEX. The second component is the strategy itself--implement trading strategies and run them in SS. We are going to implement two strategies for this project, Kalman Filter and Reinforcement Learning. The next component will be interpreting the output of SS. SS will generate complex CSV files containing trade histories and earnings. Since the CSVs do not provide much explicitly, we will interpret them and analyze the strategies' performance, generating comparisons and visualizations. The final component is automation. Since running SS backtesting requires users to type many lines of commands, we feel the need to write a script to replace the manual work. Ideally, we should be able to run the backtesting in one click.
+We will implement HFT strategies that trade on real-world market data using proprietary software Strategy Studio (SS). This project has several components: market data, strategy, analysis, and automation. The first component is **data parser**. Since SS does not have built-in data, we need to harvest our own for backtesting. Therefore, we will be downloading historic market data from IEX. The second component is the **strategy development**--implement trading strategies and backtest the strategies in SS. We are going to implement a few strategies for this project, ***Kalman Filter***, ***Reinforcement Learning***, and ***Long short term memory*** . The next component will be interpreting the output of SS. SS will generate complex CSV files containing trade histories and earnings. Since the CSVs do not provide much explicitly, we will interpret them and analyze the strategies' performance, generating comparisons and visualizations. The final component is automation. Since running SS backtesting requires users to type many lines of commands, we feel the need to write a script to replace the manual work. Ideally, we should be able to run the backtesting in one click.
 
-## Components & Technologies:
+## Project Outline
 
-### Data parsing
+- IEX data parser
+  - We are using data parser provided by Professor David Lariviere to parse SPY data
+- Strategies
+  - Kalman Filter Strategy
+  - Reinforcement Learning Strategy
+  - LSTM (back up)
+- Analysis
+  - Strategy Profit and Loss
+  - Strategy output comparison
 
-- We will be using the IEX parser provided by Professor David Lariviere.
+## Usage
 
-### Implement strategy
+### IEX Data Parser
+
+#### Parser outline
+
+- We directly imported Professor's IEX downloader/parser as a submodule of our project so we can conveniently retrive IEX data.
+- This parser downloads and parses IEX DEEP and trade data into the "Depth Update By Price" and "Trade Message" format in Strategy Studio, respectively. 
+- The original repository can be found <ins>[here](https://gitlab.engr.illinois.edu/shared_code/iexdownloaderparser)</ins>.
+
+#### Steps
+
+1. Direct to the IexDownloaderParser directory `cd parser/IexDownloaderParser`and run <code>./download.sh</code> to download the source IEX deep data (.gz format). To retrieve data in a specific range of dates, open and edit the download.sh, only modifies the start-date and end-date arguments:
+
+   ```bash
+   python3 src/download_iex_pcaps.py --start-date 2021-11-15 --end-date 2021-11-16 --download-dir data/iex_downloads
+   ```
+
+   Note that git-submodules need to be pulled separately, detailed instruction for pulling git-submodule can be found [here](https://stackoverflow.com/questions/1030169/easy-way-to-pull-latest-of-all-git-submodules)
+
+2. Check that the downloaded raw IEX DEEP dat files should be stored at `iexdownloaderparsers/data/iex_downlaods/DEEP`
+
+3. Run `./parse_all.sh` to parse IEX deep data. Result will be stored under `iexdownloaderparsers/data/text_tick_data` with the foramt `tick_SYMBOL_YYYYMMDD.txt.gz`.  
+
+   To specify the company symbols, edit the `--symbols` argument in `parse_all.sh`. The default is SPY only. You can add more companys:
+
+   ```bash
+   gunzip -d -c $pcap | tcpdump -r - -w - -s 0 | $PYTHON_INTERP src/parse_iex_pcap.py /dev/stdin --symbols SPY,APPL,GOOG,QQQ --trade-date $pcap_date --output-deep-books-too
+   ```
+
+4. The parsed data is in `.gz` format. We want to extract it and save it to a `.txt` file which can be feed into Strategy Studio. Run the following command under `iexdownloaderparsers/data/text_tick_data`  ***(please change your symbol and dates accordingly)***:
+
+   ```bash
+   gunzip -d -c tick_SPY_20171218.txt.gz | awk -F',' '$4 == "P" {print $0}' > tick_SPY_20171218.txt
+   ```
+
+   This command extracts the data and rows where the fourth column is "P", which corresponds to the format of "Depth Update By Price (OrderBook data)" in Strategy Studio. 
+
+   If instead you want to retrive only the trade data, simply change "P" to "T" in the above command, which is following:
+
+   ```bash
+   gunzip -d -c tick_SPY_20171218.txt.gz | awk -F',' '$4 == "T" {print $0}' > tick_SPY_20171218.txt
+   ```
+
+5. The `tick_SPY_20171218.txt` (*or your custom data file*) is ready to feed in SS.
+
+### Strategy Studio
 
 - Strategies will be implemented by extending StrategyStudio::Strategy interface using C++. In this way, we can compile binaries for SS to backtest.
   - C++
   - Strategy Studio
 
+#### Kalman Filter Strategy
+
+- This is a Kalman Filter based trading strategy that ...**TODO**
+
+#### Reinforcement Learning Strategy
+
+- This is a RL based trading strategy that ...**TODO**
+
+#### LSTM Strategy (Backup)
+
+- This is a LSTM based trading strategy that ...**TODO**
+
+#### Strategy Usage
+
+- Move these files (`.cpp, .h, Makefile`) into Strategy Studios
+- We have provided the script file `compile_backtest.sh` that compiles the strategy, moves the strategy output file to the desired location in Strategy Studio, and start the backtest command line in Strategy Studio. 
+- When Strategy Studio finishes backtesting, our script would then export these files into `.csv` files. 
+
+
 ### Analysis
 
-- Since analysis requires parsing output CSV files and generating plots, we determined that Python will best serve our interest due to the widely available data analysis packages. Some potential tools are:
-  - Matplotlib
-  - Seaborn
-  - Pandas
-  - Numpy
+#### Analysis & Visualization Description
 
-### Automation
+- For analysis, we would like to know the statistics of our strategy. There are various metrics that we would like to evaluate on our result. Strategy Studio outputs three files: fills, orders, and PnL (Profit and Loss). For analysis, we would mainly focus on PnL since the net loss is what we care about the most as traders.
 
-- SS works by launching a separate terminal where users need to type in commands. Therefore, a logical approach to writing an automation script will be redirecting stdin and stdout. We feel that the two viable options are bash scripts using directional operators or Python with system calls.
-  - Bash script
-  - python script
+- The PnL file generated is a `.csv` file with three columns: Strategy name, Time, and Cumulative PnL. For interpretation, we would analyze the PnL based on several metrics. 
+
+  - Maximum Profit and Loss
+
+    <img src="./documentation/figs/max_pnl.png" />
+
+  - Minimum Profit and Loss
+
+    <img src="./documentation/figs/min_pnl.png" />
+
+  - Net Profit and Loss
+
+    <img src="./documentation/figs/net_pnl.png" />
+
+  - Cumulative Returns
+
+    <img src="./documentation/figs/cumulative_pnl.png" />
+
+  - Sharpe Ratio
+
+    <img src="./documentation/figs/sharpe.png" />
+
+  - Max Drowndown
+
+    <img src="./documentation/figs/max_drown.png" />
+
+
+- For visualization, we would like to visualize the Profit and Loss against Time, as well as a comparison with the Tick data.
+
+#### Analysis & Visualization Usage
+
+- Direct to `analysis` directory (`cd ./analysis`)
+- `cd ./analysis`
+- `python3 main.py` would run visualization by using the latest three files (Fill, Order, and PnL). This will generate figures and store in `./figs/` directory. 
+- There is also an interactive version by runing `python3 main.py -i` and follows the promot.
+  - Interactive mode would ask you to add strategy by entering the 
+    - `Name` of the strategy
+    - `ID` of the strategy output if the strategy is ran multiple times
+    - `Ticks` of the strategy, or the symbol, for example:`SPY` 
+  - When we enter no for adding strategy, the interactive mode would also outputs the **measurement table** with each strategy statistics as a column
 
 ## Evaluation & Goal:
 
