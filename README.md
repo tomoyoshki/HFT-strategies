@@ -37,7 +37,7 @@ We will implement HFT strategies that trade on real-world market data using prop
 
 #### Steps
 
-1. Direct to the IexDownloaderParser directory `cd parser/IexDownloaderParser`and run <code>./download.sh</code> to download the source IEX deep data (.gz format). To retrieve data in a specific range of dates, open and edit the download.sh, only modifies the start-date and end-date arguments:
+1. Direct to the IexDownloaderParser directory `cd iexdownloaderparser/`and run `./download.sh` to download the source IEX deep data (.gz format). To retrieve data in a specific range of dates, open and edit the download.sh, only modifies the start-date and end-date arguments:
 
    ```bash
    python3 src/download_iex_pcaps.py --start-date 2021-11-15 --end-date 2021-11-16 --download-dir data/iex_downloads
