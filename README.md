@@ -97,6 +97,11 @@ We will implement HFT strategies that trade on real-world market data using prop
 
 ### Analysis
 
+***Setup***
+```
+pip install -r requirements.txt
+```
+
 #### Analysis & Visualization Description
 
 - For analysis, we would like to know the statistics of our strategy. There are various metrics that we would like to evaluate on our result. Strategy Studio outputs three files: fills, orders, and PnL (Profit and Loss). For analysis, we would mainly focus on PnL since the net loss is what we care about the most as traders.
