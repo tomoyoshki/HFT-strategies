@@ -271,15 +271,39 @@ Since Strategy Studio does not have native torch library, we had to figure out a
 We trained our model in Python.
 
 **Dataset**
-- We are using SPY Jan 03 - May 13 stock market data
+- We are using SPY Jan 03 - May 13 stock market data. There are total of 1266892 data point.
 <p align="center">
   <img src="/assets/SPY_jan03_may13.png" />
 </p>
+- Then we use MinMax transform to scale our data into -1 and 1 range for normalization.
+
+```math
+x_\text{scaled} = {x - x_\text{min} \over x_\text{max} - x_\text{min}} * (1 - (-1)) + -1
+```
+- We then splitted our data into training data and testing data. The ratio used is $8:2$. That gives us 1013498 traning data point and 253374 testing data point.
 
 **Loss**
+- For the loss, we are using the Mean Squared Error. We trained our model in 100 epoches with hidden dimesion equal to 32
+```math
+\text{MSE} = {1 \over N} \sum_{i = 1}^{n} (y_i - \tilde{y_i})^2
+```
+- The resulting loss curve is
+<p align="center">
+  <img src="/assets/prediction_jan_may.png" />
+</p>
 
-**Test**
+- After training, we have zero for the Training Root Mean Squared Error, and 0.07 for the Testing Root Mean Squared Error.
+- Plotting our model performance against the stock market data, we get
+<p align="center">
+  <img src="/assets/lstm_spy_full.png" />
+</p>
+- We can see that the test is higher than expected, this makes sense since the training data used has significantly higher value than the testing dataset. 
+- Here is a zoomed in figure on the testing portion.
+<p align="center">
+  <img src="/assets/spy_diff.png" />
+</p>
 
+##### C++ Strategy Implemetation Details
 
 #### Results
 
