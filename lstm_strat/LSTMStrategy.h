@@ -64,6 +64,8 @@ public: /* from IEventCallback */
      * to remind the strategy of the current parameter values.
      */ 
     void OnParamChanged(StrategyParam& param);
+private:
+    int position = 0;
 
 private:  // Helper functions specific to this strategy
     void AdjustPortfolio();

@@ -57,12 +57,18 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
             inputs.push_back(torch::tensor({scaled_price}));
             at::Tensor output = model.forward(inputs).toTensor();
             float result = output.index({0}).item<float>();
-            std::cout << "Current Price (Scaled): " << scaled_price <<". The model output is: " << result <<"."<< std::endl;
+            // std::cout << "Current Price (Scaled): " << scaled_price <<". The model output is: " << result <<"."<< std::endl;
+            int size = 2;
             if (result > scaled_price) {
+                // BUY
                 // int size = output.index({1}).item<int>();
                 this->SendSimpleOrder(&msg.instrument(), 2);
             } else {
                 // Sell. 
+                if (this->position < size) {
+                    this->SendSimpleOrder(&msg.instrument(), 2);
+                    continue;
+                }
                 // int size = output.index({1}).item<int>();
                 this->SendSimpleOrder(&msg.instrument(), -1 * 2);
             }
@@ -101,14 +107,14 @@ int trade_size) {
         ORDER_TIF_DAY,
         ORDER_TYPE_LIMIT);
 
-    std::cout << "SendSimpleOrder(): about to send new order for " <<
+    // std::cout << "SendSimpleOrder(): about to send new order for " <<
      trade_size << " at $" << price << std::endl;
     TradeActionResult tra = trade_actions()->SendNewOrder(params);
     if (tra == TRADE_ACTION_RESULT_SUCCESSFUL) {
         // m_instrument_order_id_map[instrument] = params.order_id;
-        std::cout << "SendOrder(): Sending new order successful!" << std::endl;
+        // std::cout << "SendOrder(): Sending new order successful!" << std::endl;
     } else {
-        std::cout << "SendOrder(): Error sending new order!!!" << tra
+        // std::cout << "SendOrder(): Error sending new order!!!" << tra
         << std::endl;
     }
 }
