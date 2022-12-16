@@ -38,7 +38,7 @@ void LSTMStrategy::RegisterForStrategyEvents(
 }
 
 float ScaleData(float data) {
-    float max = 479.98,;
+    float max = 479.98;
     float min = 385.16;
     return ( (data - min) / (max - min) ) * 2  + -1;
 }
