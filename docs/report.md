@@ -272,6 +272,9 @@ We trained our model in Python.
 
 **Dataset**
 - We are using SPY Jan 03 - May 13 stock market data
+<p align="center">
+  <img src="/assets/SPY_jan03_may13.png" />
+</p>
 
 **Loss**
 
