@@ -225,9 +225,20 @@ For this project, we would mainly focus on two specfic events: **Trades** and **
 ### Kalman Filter Strategy
 
 #### Background
-Kalman filter is a common technic for signal processing. It introduces random variances to deduce to potential locations of a projectile. We hope that it could also capture the movements in between trades and profit from it.
+
+- Kalman filter is a common technic for signal processing. It introduces random variances to deduce to potential locations of a projectile. We hope that it could also capture the movements in between trades and profit from it.
+
 #### Implementation
-We build a kalman filter that takes the current tick's price and volume. At each timestamp, we first update the filter with observed values, then ask it the predict the next value. We then make trade actions based on the predicted values. The filter is reset at the end of each day because it should capture only continuous values.
+
+- We build a kalman filter that takes the current tick's price and volume. At each timestamp, we first update the filter with observed values, then ask it the predict the next value. We then make trade actions based on the predicted values. The filter is reset at the end of each day because it should capture only continuous values.
+
+- We also used python program to generate an estimate of the value errors of the stock market. This helps us to tune the parameters for Backtesting.
+
+<p align="center">
+  <img src="/assets/trade_kalman_analysis.png" />
+</p>
+
+
 #### Results
 
 ### Reinforcement Learning Strategy 
