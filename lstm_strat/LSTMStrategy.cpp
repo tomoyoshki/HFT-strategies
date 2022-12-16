@@ -67,10 +67,10 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
                 // Sell. 
                 if (this->position < size) {
                     this->SendSimpleOrder(&msg.instrument(), 2);
-                    continue;
+                } else {
+                    // int size = output.index({1}).item<int>();
+                    this->SendSimpleOrder(&msg.instrument(), -1 * 2);
                 }
-                // int size = output.index({1}).item<int>();
-                this->SendSimpleOrder(&msg.instrument(), -1 * 2);
             }
         }
         catch (const std::exception &exc) {
