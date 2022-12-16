@@ -238,7 +238,29 @@ We build a kalman filter that takes the current tick's price and volume. At each
 
 #### Background 
 
-Long Short-Term Memory (LSTM) is a type of recurrent neural network (RNN) that is well-suited to model long-term dependencies in data. RNNs are neural networks that process sequential data, such as text or time series data, by making use of internal memory to remember information from previous time steps. LSTMs are a variant of RNNs that are able to capture long-term dependencies more effectively than traditional RNNs, by using gating mechanisms to control the flow of information in the network.
+- Long Short-Term Memory (LSTM) is a type of recurrent neural network (RNN) that is well-suited to model long-term dependencies in data. RNNs are neural networks that process sequential data, such as text or time series data, by making use of internal memory to remember information from previous time steps. LSTMs are a variant of RNNs that are able to capture long-term dependencies more effectively than traditional RNNs, by using gating mechanisms to control the flow of information in the network.
+
+- We implemented a LSTM model using Python, which is exported as a .pt model then loaded and backtested in Strategy Studio.
+In high-frequency trading (HFT), LSTM models can be used to analyze and make predictions based on financial time series data, such as stock prices, volumes, and order flows. HFT firms often use LSTMs to build predictive models that can identify patterns in the data and make trades based on those patterns. In our project, we used LSTM to predict the market price of the given stock for the next trade; if the predicted price is higher, we will initiate a BUY action in StrategyStudio, else, we will sell.
+
+<p align="center">
+  <img src="/assets/lstm.png" />
+</p>
+
+- The technology involved is:
+  * Python and Google Colab: The LSTM model is implemented in Python and trained locally.
+  * Strategy Studio: We load the Python-trained model ("lstm.pt") in C++ using LibTorch library (a C++ distribution for Pytorch), and we run inference on the model on each trade callback (`OnTrade()`). The model will yield a result, from which we will leverage to make further decisions.
+
+```math
+\mathbf{i}t = \sigma(\mathbf{W}{ix} \mathbf{x}t + \mathbf{W}{ih} \mathbf{h}_{t-1} + \mathbf{b}_i) \\
+\mathbf{f}t = \sigma(\mathbf{W}{fx} \mathbf{x}t + \mathbf{W}{fh} \mathbf{h}_{t-1} + \mathbf{b}_f) \\
+\mathbf{o}t = \sigma(\mathbf{W}{ox} \mathbf{x}t + \mathbf{W}{oh} \mathbf{h}_{t-1} + \mathbf{b}_o) \\ 
+\mathbf{g}t = \tanh(\mathbf{W}{gx} \mathbf{x}t + \mathbf{W}{gh} \mathbf{h}_{t-1} + \mathbf{b}_g) \\
+\mathbf{c}_t = \mathbf{f}t \odot \mathbf{c}{t-1} + \mathbf{i}_t \odot \mathbf{g}_t \\
+\mathbf{h}_t = \mathbf{o}_t \odot \tanh(\mathbf{c}_t)
+```
+
+- where $`\mathbf{i}t`$, $`\mathbf{f}t`$, $`\mathbf{o}t`$, and $`\mathbf{g}t`$ are the input, forget, output, and cell activation gates, respectively; $`\mathbf{c}t`$ is the cell state; $`\mathbf{h}t`$ is the output of the LSTM unit at time $t$; $`\mathbf{x}t`$ is the input at time $t$; $`\mathbf{W}{ix}`$, $`\mathbf{W}{fx}`$, $`\mathbf{W}{ox}`$, and $`\mathbf{W}{gx}`$ are the input-to-input gate, input-to-forget gate, input-to-output gate, and input-to-cell activation gate weight matrices, respectively; $`\mathbf{W}{ih}`$, $`\mathbf{W}{fh}`$, $`\mathbf{W}{oh}`$, and $`\mathbf{W}_{gh}`$ are the hidden-to-input gate, hidden-to-forget gate, hidden-to-output gate, and hidden-to-cell activation gate weight matrices.
 
 #### Implementation
 
@@ -346,27 +368,36 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 4. **If you were to continue working on this project, what would you continue to do to improve it, how, and why?**
 5. **What advice do you offer to future students taking this course and working on their semester long project. Providing detailed thoughtful advice to future students will be weighed heavily in evaluating your responses.**
 
-### Tomoyoshi (Tommy), Kimura
+### Tomoyoshi (Tommy), Kimura (Project Leader)
 
 copied from ie498 TOOD change stuff
 
 1. **What did you specifically do individually for this project?**
 
-   For this project, the major tasks I was responsible for were Analysis & Visualization, Strategies Implementation, Documentations, and video recordings. The entire project has been splitted into different phases, and during the first phase, each of us worked on different parts, and I mainly developed the analysis program for the strategies. I was able to design and implement various objects with Python to achieve the goal, along with learning and applying powerful packages like Plotly to create good visualizations for our strategy analysis. In the last phases, I have used this program to generate various meaningful graphs for my peer and for the documentation. 
+- I was in charge of creating issues, assigning tasks, setting milestones, and keeping tracks of all the progress in the group.
+- I was responsible for downloading a part of the data we use for Backtesting
+- I implemented the Kalman Filter strategy, using the backbone Kalman Filter class implemented by Yihong. 
+- I implemented LSTM backbone model and trained the model against SPY data from January to May.
+- I also helped Ruipeng in integrating LSTM model into Strategy Studio by generating the Traced model path file
+- I developed Analysis & Visualization with Python to visualize various metrics for the strategies we implemented, and evaluated potential bug in Strategy Studio such as huge jump in PnL when the market closes
+- I outlined the README and report documents for my team to fill in their parts
 
-   During the second phase, I took over the responsibility to dive into the Strategy Studio examples to understand the interface of the class Strategy, and was the first one to try out implementing an introductory strategy recommended by the Professor (Buy Last Sell First). During this process, I had the opportunities to help my team to understand how the Strategy class interface works, and give them some guidance in helping them to start off on their strategy. I was also able to test the parser we developed in the earlier phase and pointed out potential possibilities for improvements. Beside BLSF, I also tried writing a different strategy, the Swing Strategy. I found this strategy through internet and learned from videos to implement it in Strategy Studio. 
-
-   For documentation, I also worked on organizing readme file and the Final report for this project, including outlining the project structures for my peers to fill in and polishing the files according to Professor’s rubric.  
-
-   Lastly, I have recorded the Demo video for project submission. 
 
 2. **What did you learn as a result of doing your project?**
 
-   I have learned a lot as a result of doing this project. And one thing that I am most grateful about is learning the DevOps pipeline for a better project flow. I was able to learn a lot from my teammates regarding better Git control through a strict pipeline checking for every commit. I feel like I am more comfortable using Git for any project and believe that this has benefited me for the future. Beside the general DevOps, I have also learned and firmed what I have learned in the class: Market Trading. From developing my own Trading Strategies over financial market, I feel like I now have a solid understanding in the microstructure of the market, including the data feed like Trade and Best Bid and Offer. Writing my own strategies also taught me many tricks that this industry has for making profits. This project definitely prepares me well for this area in many ways, and also excites me for the course **Algorithmic Market Microstructure** next semester. I have also practiced my skills in Object Programming and Data Visualization  through this project, and these would definitely be beneficial to my future. 
+- I learned various important concepts for High Frequency Trading and how to develop strategies with other areas such as Kalman Filter and Long Short Term Memory
+- I have gained practical experience in developing my own strategy with Kalman Filter, which has been an important concept for time series data and motion data.
+- I also had a chance to develop my own model using market data. I learned a lot about Long Short Term Memory and how it can be used to write strategies.
+- I also gained experience in converting models implemented in Python into C++. 
+- I have gained a solid understanding in the market microstructure, including data feed like Tradec and BBO
+- I am more familiar with visualizations with Market data and how to produce meaningful figures for quantitative analysis.
 
 3. **If you had a time machine and could go back to the beginning, what would you have done differently?**
 
-   One thing that I would have done differently is to make sure that I have done enough research and negotiate with team member enough to have a better understanding of the detail pipelines of the project. And I would definitely recommend conducting more tests for each sub-project. When I was generating graphs with my analysis program that I wrote in the earlier stages, I realized that I missed some small features and resulted in errors or generated some figures that were under the expectation. Because of this, I had to renegotiate with my team members and rewrite some parts of my program to fit into the automation pipeline as well as fixing the errors for generating the stategy figures. Other thing that I would have done differently is the work distribution during this semester. It was a bit rush near the end and things have only gotten busier with finals and other final projects. Therefore, distributing more heavy works to the first half of the semester would definately improve it. 
+- Do more research on the backbone of the project
+- Communicate better with teammates to make sure that every team member is making progress.
+- Conducting more tests for strategy implementations
+- Start early to ensure that the project can be delivered on time
 
 4. **If you were to continue working on this project, what would you continue to do to improve it, how, and why?**
 
