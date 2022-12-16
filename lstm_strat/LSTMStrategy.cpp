@@ -37,6 +37,12 @@ void LSTMStrategy::RegisterForStrategyEvents(
     StrategyEventRegister* eventRegister, DateType currDate) {
 }
 
+float ScaleData(float data) {
+    float max = 477.79;
+    float min = 473.85;
+    return ( (data - min) / (max - min) ) * 2  + -1  
+}
+
 void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
      // For lack of a better model, just execute an order every 6000 trades.
      if (current_trade % 6000 == 0) {
@@ -46,18 +52,20 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
             // inputs.push_back(torch::ones({10}));
 
             // Execute the model and turn its output into a tensor.
-
-            inputs.push_back(torch::tensor({msg.trade().price()}));
+            float price = msg.trade().price()
+            float scaled_price = ScaleData(price);
+            inputs.push_back(torch::tensor({scaled_price}));
             at::Tensor output = model.forward(inputs).toTensor();
-            std::cout << "Decision (0 for sell, 1 for buy):" <<output.index({0})<<"."<< std::endl;
-            // if (output.index({0}).item<bool>()) {
-            //     int size = output.index({1}).item<int>();
-            //     this->SendSimpleOrder(&msg.instrument(), size);
-            // } else {
-            //     // Sell. 
-            //     int size = output.index({1}).item<int>();
-            //     this->SendSimpleOrder(&msg.instrument(), -1 * size);
-            // }
+            float result = output.index({0}).item<float>();
+            std::cout << "The model output is: " << result <<"."<< std::endl;
+            if (result > price) {
+                // int size = output.index({1}).item<int>();
+                this->SendSimpleOrder(&msg.instrument(), 10);
+            } else {
+                // Sell. 
+                int size = output.index({1}).item<int>();
+                this->SendSimpleOrder(&msg.instrument(), -1 * 10);
+            }
         }
         catch (const c10::Error& e) {
             std::cerr << "error loading the model\n";
