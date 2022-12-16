@@ -57,8 +57,8 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
             inputs.push_back(torch::tensor({scaled_price}));
             at::Tensor output = model.forward(inputs).toTensor();
             float result = output.index({0}).item<float>();
-            std::cout << "The model output is: " << result <<"."<< std::endl;
-            if (result > price) {
+            std::cout << "Current Price (Scaled): " << scaled_price <<". The model output is: " << result <<"."<< std::endl;
+            if (result > scaled_price) {
                 // int size = output.index({1}).item<int>();
                 this->SendSimpleOrder(&msg.instrument(), 10);
             } else {
