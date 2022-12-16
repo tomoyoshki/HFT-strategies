@@ -38,14 +38,14 @@ void LSTMStrategy::RegisterForStrategyEvents(
 }
 
 float ScaleData(float data) {
-    float max = 477.79;
-    float min = 473.85;
+    float max = 479.98,;
+    float min = 385.16;
     return ( (data - min) / (max - min) ) * 2  + -1;
 }
 
 void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
      // For lack of a better model, just execute an order every 6000 trades.
-     if (current_trade % 6000 == 0) {
+     if (current_trade % 20 == 0) {
         try {
             // Deserialize the ScriptModule from a file using torch::jit::load().
             std::vector<torch::jit::IValue> inputs;
@@ -60,11 +60,11 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
             std::cout << "Current Price (Scaled): " << scaled_price <<". The model output is: " << result <<"."<< std::endl;
             if (result > scaled_price) {
                 // int size = output.index({1}).item<int>();
-                this->SendSimpleOrder(&msg.instrument(), 10);
+                this->SendSimpleOrder(&msg.instrument(), 2);
             } else {
                 // Sell. 
                 // int size = output.index({1}).item<int>();
-                this->SendSimpleOrder(&msg.instrument(), -1 * 10);
+                this->SendSimpleOrder(&msg.instrument(), -1 * 2);
             }
         }
         catch (const std::exception &exc) {
