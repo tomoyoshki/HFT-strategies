@@ -7,7 +7,10 @@
 ## People
 
 **Ruipeng (Ray), Han**
-- TODO
+Hello, I am a senior majoring in Math & Computer Science and Statistics at the University of Illinois at Urbana-Champaign. Though my study is wide and highly interdisciplinary, my primary interest is in computer systems, particularly in distributed systems and networks. I also experienced with software engineering from the past four summer interns as a SDE, and my stronggest/favoriate programming languages are Python, Go, and Javascript. I am currently looking for full-time/intern job opportunities in the software development industry as well as applying for graduate schools in Computer Science.
+
+Feel free to reach me at ruipeng2@illinois or my linkedin profile: linkedin.com/in/ruipenghan
+
 
 **Yihong, Jian**
 
