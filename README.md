@@ -25,6 +25,11 @@ We will implement HFT strategies that trade on real-world market data using prop
   - Strategy output comparison
 - Report (inside `./docs`)
 
+## Dependencies
+- LibTorch (with CXX11 ABI)
+- Eigen
+- Strategy Studio
+
 ## Usage
 
 ### IEX Data Parser

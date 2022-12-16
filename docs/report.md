@@ -1,5 +1,7 @@
 # High Frequency Trading Strategies with RCM Strategy Studio
 
+[!toc]
+
 **Group 1 FIN 556 High Frequency Trading Final Report**
 
 ## People
@@ -9,7 +11,7 @@
 
 **Yihong, Jian**
 
-- TODO
+- Yihong is a senior studying computer science at University of Illinois, Urbana-Champaign graduating in May 2023. He is passionate about lower level programmings with experince in multiple fields such as networks, distributed systems, and kernels. He has multiple project experiences with C++, such as writing a HDFS from scratch. 
 
 **Tomoyoshi (Tommy), Kimura**
 
@@ -28,13 +30,13 @@ This is a semester-long project for the [FIN 556](https://courses.illinois.edu/s
 Our project aims to: 
 
 - Develop alogrithmic trading strategies using nano-second accurate data, and
-- Automate the process of downloading and parsing exchange source data, backtesting our algorithms on these data, and generating result figures and analysis.
+- Generate figures and anlaysize our strategy performance.
 
 We further break down our project into four sections: data retrival and parsing, strategy development, and analysis
 
 1. Data Retrival and Parsing:
 
-   The main market data sources for this project are Alpaca, NASDAQ, and IEX. We have developed parsing scripts for Alpaca and NASDAQ TotalView-ITCH 5.0
+   The main market data sources for this project is IEX. We adopted professor Lariviere's IEX data downloader and parser for the project.
 
 2. Strategy Development:
 
@@ -52,12 +54,11 @@ We further break down our project into four sections: data retrival and parsing,
 - Bash
   - A scripting language that allow users to chain series of commands and feed into computer
   - We write bash scripts for automation works.
-- C/C++
+- C++
   - Strategy Studio provides the interface entirely in C++ and allow us to implement various strategies in C++. 
-  - We have also used C to write our Nasdaq data parser.
 - Python
-  - We used Python for several tasks dealing with data. We have implemented the Alpaca data parser with Python to download data from the Alpaca API and convert them into valid format for Strategy Studio Tick Readers. Alpaca API provides very useful Python package, and this is the primary reason we chose Python for this task.
-  - Our IEX and NASDAQ TotalView-ITCH 5.0 data parsers are also implemented in Python. 
+  - We used Python for several tasks dealing with data.
+  - We used Python to train deep learning models for ML based strategies.
   - Python is also the major language for result analysis and visualization. We chose Python because there is a very powerful Visualization for financial market data called Plotly. 
 
 
@@ -66,6 +67,15 @@ We further break down our project into four sections: data retrival and parsing,
 - Strategy Studio
   - We are grateful that **RCM** has sponsored us to give us free access to Strategy Studio for implementing and backtesting our strategies with the market data.
 
+- LibTorch
+  - The C++ SDK for PyTorch. We trained models in python and export as a model file. Then we read model file in the C++ strategy code and run predictions.
+
+- Eigen
+  - Eigen is an open source C++ linear algebra library that supports the header only KalmanFilter library. Luckly Strategy Studio ships with it so we don't have to manually install it.
+
+- Jupyter Notebook
+  - Jupyter Notebook is light weight dev tool for Python and it's commonly used in datascience. We used the tool to train ML models.
+
 #### Development Frameworks
 
 - Virtual Box/Vagrant
@@ -73,6 +83,14 @@ We further break down our project into four sections: data retrival and parsing,
   - Vagrant can use virtualbox to launch standardrized VMs to keep consistency in each run of our project.
   - We used vagrant and virtualbox to set up the environment that runs our project.
   - Our vagrant box contained Software Studio and necessary enviroment. It derived from Prof's Fin566 box.
+
+- Google Colab
+  - Colab is a platform hosted by Google
+  - We trained models on the platform
+
+- VS Code
+  - The de facto text editor that everyone uses
+  - We use VS Code to SSH into vagrant to do devs (including writing this report)
 
 #### Opearting Systems
 - Ubuntu 20.04
@@ -89,7 +107,6 @@ We further break down our project into four sections: data retrival and parsing,
   plotly
   numpy
   pandas
-  alpaca_trade_api
   kaleido
   ```
 
@@ -97,6 +114,17 @@ We further break down our project into four sections: data retrival and parsing,
 
 ```bash
 group_01_project
+└── analysis
+└── docs
+└── quant
+└── strategies
+  ├── kalman_filter_strategy
+	  ├── KalmanFilterStrategy.cpp
+	  ├── KalmanFilterStrategy.h
+    ├── Makfile
+    ├── kalman_filter.cpp
+    ├── kalman_filter.h
+
 ```
 
 ## Usage:
@@ -107,10 +135,11 @@ To run our compiled demo, follow these steps:
 ```bash
 > git clone https://gitlab.engr.illinois.edu/fin556_algo_market_micro_fall_2022/fin556_algo_fall_2022_group_01/group_01_project.git
 ```
-3. Hit it
-```bash
-> ./go.sh
-```
+3. Copy strategy into SS sdk
+4. Compile
+5. Copy ```.so``` file to bt directory
+6. Run bt 
+
 
 ### IEX Data parsers
 
@@ -196,8 +225,10 @@ For this project, we would mainly focus on two specfic events: **Trades** and **
 ## Strategy Implementation
 
 ### Kalman Filter Strategy
-
+#### Background
+Kalman filter is a common technic for signal processing. It introduces random variances to deduce to potential locations of a projectile. We hope that it could also capture the movements in between trades and profit from it.
 #### Implementation
+We build a kalman filter that takes the current tick's price and volume. At each timestamp, we first update the filter with observed values, then ask it the predict the next value. We then make trade actions based on the predicted values. The filter is reset at the end of each day because it should capture only continuous values.
 #### Results
 
 ### Reinforcement Learning Strategy 
