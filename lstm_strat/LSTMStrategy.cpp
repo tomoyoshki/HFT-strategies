@@ -108,14 +108,14 @@ int trade_size) {
         ORDER_TYPE_LIMIT);
 
     // std::cout << "SendSimpleOrder(): about to send new order for " <<
-     trade_size << " at $" << price << std::endl;
+    //  trade_size << " at $" << price << std::endl;
     TradeActionResult tra = trade_actions()->SendNewOrder(params);
     if (tra == TRADE_ACTION_RESULT_SUCCESSFUL) {
         // m_instrument_order_id_map[instrument] = params.order_id;
         // std::cout << "SendOrder(): Sending new order successful!" << std::endl;
     } else {
         // std::cout << "SendOrder(): Error sending new order!!!" << tra
-        << std::endl;
+        //<< std::endl;
     }
 }
 
