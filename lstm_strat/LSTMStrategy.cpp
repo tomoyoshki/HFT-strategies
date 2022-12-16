@@ -40,7 +40,7 @@ void LSTMStrategy::RegisterForStrategyEvents(
 float ScaleData(float data) {
     float max = 477.79;
     float min = 473.85;
-    return ( (data - min) / (max - min) ) * 2  + -1  
+    return ( (data - min) / (max - min) ) * 2  + -1;
 }
 
 void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
@@ -52,7 +52,7 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
             // inputs.push_back(torch::ones({10}));
 
             // Execute the model and turn its output into a tensor.
-            float price = msg.trade().price()
+            float price = msg.trade().price();
             float scaled_price = ScaleData(price);
             inputs.push_back(torch::tensor({scaled_price}));
             at::Tensor output = model.forward(inputs).toTensor();
@@ -67,8 +67,8 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
                 this->SendSimpleOrder(&msg.instrument(), -1 * 10);
             }
         }
-        catch (const c10::Error& e) {
-            std::cerr << "error loading the model\n";
+        catch (const std::exception &exc)) {
+            std::cerr << exc.what();
         }
     }
     current_trade ++;
