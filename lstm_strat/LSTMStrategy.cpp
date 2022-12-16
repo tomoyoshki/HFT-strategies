@@ -42,13 +42,13 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
      if (current_trade % 6000 == 0) {
         try {
             // Deserialize the ScriptModule from a file using torch::jit::load().
-            // std::vector<torch::jit::IValue> inputs;
+            std::vector<torch::jit::IValue> inputs;
             // inputs.push_back(torch::ones({10}));
 
             // Execute the model and turn its output into a tensor.
 
-            auto input = torch::tensor({msg.trade().price()})
-            at::Tensor output = model.forward(input).toTensor();;
+            inputs.push_back(torch::tensor({msg.trade().price()}));
+            at::Tensor output = model.forward(inputs).toTensor();
             std::cout << "Decision (0 for sell, 1 for buy):" <<output.index({0})<<"."<< std::endl;
             // if (output.index({0}).item<bool>()) {
             //     int size = output.index({1}).item<int>();
