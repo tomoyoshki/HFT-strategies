@@ -11,7 +11,7 @@
 
 
 /* Set it to the path to where libtorch is downloaded. */
-const std::string path_to_model = "/home/vagrant/ss/sdk/RCM/StrategyStudio/examples/strategies/LSTMStrategy/test.pt";
+const std::string path_to_model = "/home/vagrant/ss/sdk/RCM/StrategyStudio/examples/strategies/LSTMStrategy/lstm_jan_may.pt";
 int current_trade = 0;
 
 LSTMStrategy::LSTMStrategy(StrategyID strategyID,
