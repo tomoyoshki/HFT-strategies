@@ -92,7 +92,13 @@ We will implement HFT strategies that trade on real-world market data using prop
 
 #### LSTM Strategy (Backup)
 
-- This is a LSTM based trading strategy that ...**TODO**
+- We also implemented a LSTM model using Python, which is exported as a .pt model then loaded and backtested in Strategy Studio.
+In high-frequency trading (HFT), LSTM models can be used to analyze and make predictions based on financial time series data, such as stock prices, volumes, and order flows. HFT firms often use LSTMs to build predictive models that can identify patterns in the data and make trades based on those patterns. In our project, we used LSTM to predict the market price of the given stock for the next trade; if the predicted price is higher, we will initiate a BUY action in StrategyStudio, else, we will sell.
+
+- The technology involved is:
+  * Python and Google Colab: The LSTM model is implemented in Python and trained locally.
+  * Strategy Studio: We load the Python-trained model ("lstm.pt") in C++ using LibTorch library (a C++ distribution for Pytorch), and we run inference on the model on each trade callback (`OnTrade()`). The model will yield a result, from which we will leverage to make further decisions.
+
 
 #### Strategy Usage
 
