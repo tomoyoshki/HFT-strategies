@@ -11,7 +11,7 @@
 
 
 /* Set it to the path to where libtorch is downloaded. */
-const std::string path_to_model = "/home/vagrant/ss/sdk/RCM/StrategyStudio/examples/strategies/LSTMStrategy/lstm.pt";
+const std::string path_to_model = "/home/vagrant/ss/sdk/RCM/StrategyStudio/examples/strategies/LSTMStrategy/lstm_model.pt";
 int current_trade = 0;
 
 LSTMStrategy::LSTMStrategy(StrategyID strategyID,
@@ -43,19 +43,19 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
         try {
             // Deserialize the ScriptModule from a file using torch::jit::load().
             std::vector<torch::jit::IValue> inputs;
-            inputs.push_back(torch::ones({1, 3, 224, 224}));
+            inputs.push_back(torch::ones({10}));
 
             // Execute the model and turn its output into a tensor.
             at::Tensor output = model.forward(inputs).toTensor();;
-            std::cout << "Decision (0 for sell, 1 for buy):" <<output.index({0}) << ", with trade size: " << output.index({1}) <<"."<< std::endl;
-            if (output.index({0}).item<bool>()) {
-                int size = output.index({1}).item<int>();
-                this->SendSimpleOrder(&msg.instrument(), size);
-            } else {
-                // Sell. 
-                int size = output.index({1}).item<int>();
-                this->SendSimpleOrder(&msg.instrument(), -1 * size);
-            }
+            std::cout << "Decision (0 for sell, 1 for buy):" <<output.index({0})<<"."<< std::endl;
+            // if (output.index({0}).item<bool>()) {
+            //     int size = output.index({1}).item<int>();
+            //     this->SendSimpleOrder(&msg.instrument(), size);
+            // } else {
+            //     // Sell. 
+            //     int size = output.index({1}).item<int>();
+            //     this->SendSimpleOrder(&msg.instrument(), -1 * size);
+            // }
         }
         catch (const c10::Error& e) {
             std::cerr << "error loading the model\n";
