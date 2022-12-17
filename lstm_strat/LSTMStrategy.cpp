@@ -62,7 +62,7 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
             if (result > scaled_price) {
                 // BUY //TODO: May need to check if order is executed?
                 // int size = output.index({1}).item<int>();
-                this->SendSimpleOrder(&msg.instrument(), 1000);
+                this->SendSimpleOrder(&msg.instrument(), 100);
                 // this->position += 2;
             } else {
                 // if (this->position < size) {
@@ -71,7 +71,7 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
                 // } else {
                     // Sell. 
                     // int size = output.index({1}).item<int>();
-                    this->SendSimpleOrder(&msg.instrument(), -1 * 1000);
+                    this->SendSimpleOrder(&msg.instrument(), -1 * 100);
                     // this->position -= 2;
                 // }
             }
