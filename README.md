@@ -25,6 +25,49 @@ We will implement HFT strategies that trade on real-world market data using prop
   - Strategy output comparison
 - Report (inside `./docs`)
 
+```bash
+.
+├── README.md
+├── analysis
+│   ├── analysis_documentation.md
+│   ├── compare_strategy.py
+│   ├── main.py
+│   ├── sample_data
+│   ├── sample_main.py
+│   └── strategy_analysis.py
+├── assets
+├── docs
+│   ├── figs
+│   └── report.md
+├── get_torch.sh
+├── iexdownloaderparser
+├── quant
+│   ├── kalman
+│   │   ├── figures
+│   │   └── kalman_measure.py
+│   ├── quant_measure.md
+│   ├── requirements.txt
+│   └── risk_measure
+│       └── risk_measure.py
+├── requirements.txt
+└── strategies
+    ├── kalman_filter
+    │   ├── KalmanFilterStrategy.cpp
+    │   ├── KalmanFilterStrategy.h
+    │   ├── Makefile
+    │   ├── kalman_filter.cpp
+    │   └── kalman_filter.h
+    ├── lstm
+    │   ├── LSTMStrategy.cpp
+    │   ├── LSTMStrategy.h
+    │   ├── Makefile
+    │   └── lstm.ipynb
+    └── simple_torch
+        ├── Makefile
+        ├── TorchStrategy.cpp
+        └── TorchStrategy.h
+```
+
 ## Dependencies
 - LibTorch (with CXX11 ABI)
 - Eigen
@@ -89,10 +132,6 @@ We will implement HFT strategies that trade on real-world market data using prop
 \mathbf{x'} = \mathbf{A} \mathbf{x} + \mathbf{B} \mathbf{u} + \mathbf{w}
 ```
 
-#### Reinforcement Learning Strategy
-
-- This is a RL based trading strategy that ...**TODO**
-
 #### LSTM Strategy
 
 - We also implemented a LSTM model using Python, which is exported as a .pt model then loaded and backtested in Strategy Studio.
@@ -124,6 +163,10 @@ In high-frequency trading (HFT), LSTM models can be used to analyze and make pre
 - We have provided the script file `compile_backtest.sh` that compiles the strategy, moves the strategy output file to the desired location in Strategy Studio, and start the backtest command line in Strategy Studio. 
 - When Strategy Studio finishes backtesting, our script would then export these files into `.csv` files. 
 
+##### Torch Usage
+
+- We also provided a script file `get_torch.sh` to get torch into strategy studio. 
+- We have also implemented a simple torch strategy `strategies/simple_torch` that does nothing but test torch compilation.
 
 ### Analysis
 
