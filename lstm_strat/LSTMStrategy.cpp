@@ -67,6 +67,7 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
                 // Sell. 
                 if (this->position < size) {
                     this->SendSimpleOrder(&msg.instrument(), 2);
+                    this->position += 2;
                 } else {
                     // int size = output.index({1}).item<int>();
                     this->SendSimpleOrder(&msg.instrument(), -1 * 2);
