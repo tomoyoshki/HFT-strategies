@@ -60,9 +60,10 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
             // std::cout << "Current Price (Scaled): " << scaled_price <<". The model output is: " << result <<"."<< std::endl;
             int size = 2;
             if (result > scaled_price) {
-                // BUY
+                // BUY //TODO: May need to check if order is executed?
                 // int size = output.index({1}).item<int>();
                 this->SendSimpleOrder(&msg.instrument(), 2);
+                this->position += 2;
             } else {
                 // Sell. 
                 if (this->position < size) {
@@ -71,6 +72,7 @@ void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
                 } else {
                     // int size = output.index({1}).item<int>();
                     this->SendSimpleOrder(&msg.instrument(), -1 * 2);
+                    this->position -= 2;
                 }
             }
         }
