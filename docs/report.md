@@ -7,9 +7,9 @@
 ## People
 
 **Ruipeng (Ray), Han**
-Hello, I am a senior majoring in Math & Computer Science and Statistics at the University of Illinois at Urbana-Champaign. Though my study is wide and highly interdisciplinary, my primary interest is in computer systems, particularly in distributed systems and networks. I also experienced with software engineering from the past four summer interns as a SDE, and my stronggest/favoriate programming languages are Python, Go, and Javascript. I am currently looking for full-time/intern job opportunities in the software development industry as well as applying for graduate schools in Computer Science.
 
-Feel free to reach me at ruipeng2@illinois or my linkedin profile: linkedin.com/in/ruipenghan
+- Hello, I am a senior majoring in Math & Computer Science and Statistics at the University of Illinois at Urbana-Champaign. Though my study is wide and highly interdisciplinary, my primary interest is in computer systems, particularly in distributed systems and networks. I also experienced with software engineering from the past four summer interns as a SDE, and my stronggest/favoriate programming languages are Python, Go, and Javascript. I am currently looking for full-time/intern job opportunities in the software development industry as well as applying for graduate schools in Computer Science.
+- Feel free to reach me at ruipeng2@illinois or my linkedin profile: linkedin.com/in/ruipenghan
 
 
 **Yihong, Jian**
@@ -19,6 +19,9 @@ Feel free to reach me at ruipeng2@illinois or my linkedin profile: linkedin.com/
 **Tomoyoshi (Tommy), Kimura**
 
 - Tommy is a current Junior in Computer Science at the University of Illinois at Urbana-Champaign. Tommy plans to graduate in his Junior year to pursue a degree in Master of Science in Computer Science. Tommy is passionate about the intersection of Systems and Intelligence, specifically about the system protocols for efficient, scalable, and robust distributed learning. Tommy enjoys learning, and he is interested in Systems engineering, High Frequency Trading, Machine Learning, Front End Development, Backend Development, and Human Computer Interaction.
+- Email: tkimura4[at]illinois[dot]edu
+- Website: tomoyoshikimura[dot]com
+- Linkedin: linkedin[dot]com/in/tomoyoshi-kimura/
 
 **Kaiyuan, Luo**
 - TODO
@@ -233,7 +236,7 @@ For this project, we would mainly focus on two specfic events: **Trades** and **
 
 #### Implementation
 
-- We build a kalman filter that takes the current tick's price and volume. At each timestamp, we first update the filter with observed values, then ask it the predict the next value. We then make trade actions based on the predicted values. The filter is reset at the end of each day because it should capture only continuous values.
+- We built a kalman filter that takes the current tick's price and volume. At each timestamp, we first update the filter with observed values, then ask it the predict the next value. We then make trade actions based on the predicted values. The filter is reset at the end of each day because it should capture only continuous values.
 
 - We also used python program to generate an estimate of the value errors of the stock market. This helps us to tune the parameters for Backtesting.
 
@@ -243,6 +246,20 @@ For this project, we would mainly focus on two specfic events: **Trades** and **
 
 
 #### Results
+
+- We backtested our Kalman Filter Strategy against SPY tick data from January 03 to July 1st. Through our graph analysis, we found some significant jump specifically right before the market begins and right after the market closes. This has resulted in a significant loss as illustrated below. We then used python program to calculate the intra day profit and loss to produce a more accurate graph regarding the strategy performance. 
+
+##### Strategy Studio output
+
+<p align="center">
+  <img src="/assets/kalman_ss.png" />
+</p>
+
+##### Intra day Profit and Loss
+
+<p align="center">
+  <img src="/assets/kalman_intra.png" />
+</p>
 
 ### Reinforcement Learning Strategy 
 
