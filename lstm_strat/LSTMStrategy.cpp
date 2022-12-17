@@ -45,7 +45,7 @@ float ScaleData(float data) {
 
 void LSTMStrategy::OnTrade(const TradeDataEventMsg& msg) {
      // For lack of a better model, just execute an order every 6000 trades.
-     if (current_trade % 20 == 0) {
+     if (current_trade % 4000 == 0) {
         try {
             // Deserialize the ScriptModule from a file using torch::jit::load().
             std::vector<torch::jit::IValue> inputs;
