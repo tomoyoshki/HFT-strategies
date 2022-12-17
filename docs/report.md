@@ -244,6 +244,20 @@ For this project, we would mainly focus on two specfic events: **Trades** and **
 
 #### Results
 
+- We backtested our Kalman Filter Strategy against SPY tick data from January 03 to July 1st. Through our graph analysis, we found some significant jump specifically right before the market begins and right after the market closes. This has resulted in a significant loss as illustrated below. We then used python program to calculate the intra day profit and loss to produce a more accurate graph regarding the strategy performance. 
+
+##### Strategy Studio output
+
+<p align="center">
+  <img src="/assets/kalman_ss.png" />
+</p>
+
+##### Intra day Profit and Loss
+
+<p align="center">
+  <img src="/assets/kalman_intra.png" />
+</p>
+
 ### Reinforcement Learning Strategy 
 
 #### Background
