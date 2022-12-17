@@ -1,0 +1,3 @@
+[submodule "iexdownloaderparser"]
+	path = iexdownloaderparser
+	url = git@gitlab.engr.illinois.edu:shared_code/iexdownloaderparser.git
