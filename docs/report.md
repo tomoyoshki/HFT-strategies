@@ -4,6 +4,8 @@
 
 **Group 1 FIN 556 High Frequency Trading Final Report**
 
+[Project Video link](https://uofi.box.com/s/yexq0kiet8z1xossiecjcre2a89hj7fv)
+
 ## People
 
 **Ruipeng (Ray), Han**
@@ -37,6 +39,10 @@ Our project aims to:
 
 - Develop alogrithmic trading strategies using nano-second accurate data, and
 - Generate figures and anlaysize our strategy performance.
+
+<p align="center">
+  <img src="/assets/project_flow.png" />
+</p>
 
 We further break down our project into four sections: data retrival and parsing, strategy development, and analysis
 
@@ -125,6 +131,7 @@ We further break down our project into four sections: data retrival and parsing,
 │   ├── analysis_documentation.md
 │   ├── compare_strategy.py
 │   ├── main.py
+│   ├── intra.ipynb
 │   ├── sample_data
 │   ├── sample_main.py
 │   └── strategy_analysis.py
@@ -387,12 +394,15 @@ We performed three steps to implement the model in Strategy Studio:
 
 ### Layout
 
-```
-Analysis
-	├── compare_strategy.py
-	├── intra.ipynb
-	├── main.py
-	├── strategy_analysis.py
+```bash
+├── analysis
+│   ├── analysis_documentation.md
+│   ├── compare_strategy.py
+│   ├── main.py
+│   ├── intra.ipynb
+│   ├── sample_data
+│   ├── sample_main.py
+│   └── strategy_analysis.py
 ```
 
 ### Interpretation
