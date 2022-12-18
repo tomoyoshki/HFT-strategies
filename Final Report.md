@@ -127,24 +127,26 @@ We further break down our project into four sections: data retrival and parsing,
 
 ```bash
 .
+├── Final Report.md
 ├── README.md
 ├── analysis
 │   ├── analysis_documentation.md
 │   ├── compare_strategy.py
-│   ├── main.py
 │   ├── intra.ipynb
+│   ├── main.py
 │   ├── sample_data
+│   │   └── ...csv
 │   ├── sample_main.py
 │   └── strategy_analysis.py
 ├── assets
-├── docs
-│   ├── figs
-│   └── report.md
+│   └── ...png
+├── compile_and_backtest.sh
 ├── get_torch.sh
 ├── iexdownloaderparser
 ├── quant
 │   ├── kalman
 │   │   ├── figures
+│   │   │   └── ...png
 │   │   └── kalman_measure.py
 │   ├── quant_measure.md
 │   ├── requirements.txt
@@ -258,7 +260,7 @@ For this project, we would mainly focus on two specfic events: **Trades** and **
 
 #### Example CSV Output
 
-<img src="./figs/data_parser_output.jpeg" />
+<img src="/assets/data_parser_output.jpeg" />
 
 ------
 
@@ -423,27 +425,27 @@ We performed three steps to implement the model in Strategy Studio:
 
   - Maximum Profit and Loss
 
-    <img src="./figs/max_pnl.png" />
+    <img src="/assets/max_pnl.png" />
 
   - Minimum Profit and Loss
 
-    <img src="./figs/min_pnl.png" />
+    <img src="/assets/min_pnl.png" />
 
   - Net Profit and Loss
 
-    <img src="./figs/net_pnl.png" />
+    <img src="/assets/net_pnl.png" />
 
   - Cumulative Returns
 
-    <img src="./figs/cumulative_pnl.png" />
+    <img src="/assets/cumulative_pnl.png" />
 
   - Sharpe Ratio
 
-    <img src="./figs/sharpe.png" />
+    <img src="/assets/sharpe.png" />
 
   - Max Drowndown
 
-    <img src="./figs/max_drown.png" />
+    <img src="/assets/max_drown.png" />
 
 ### Visualization
 
@@ -462,10 +464,6 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 ##### Compare Strategy
 
 - The strategy acts like a container that holds all the Strategy object we mentioned earlier. In this class, we could evaluate the performance of each strategy with each other, and output graph and table for traders to analyze each strategy. 
-- Here is a box chart comparison.
-<p align="center">
-  <img src="/assets/strategies_comparison.png" />
-</p>
 - Here is a measurement comparison.
 <p align="center">
   <img src="/assets/strategy_stats.png" />
@@ -474,7 +472,7 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 #### Interpretation & Visualization Usage
 
 - Direct to `analysis` directory (`cd ./analysis`)
-- Simply run `python3 main.py` would run visualization by using the latest three files (Fill, Order, and PnL). This will generate figures and store in `./figs/` directory. 
+- Simply run `python3 main.py` would run visualization by using the latest three files (Fill, Order, and PnL). 
 - There is also an interactive version by runing `python3 main.py -i` and follows the promot.
   - Interactive mode would ask you to add strategy by entering the 
     - `Name` of the strategy
@@ -552,7 +550,9 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 - I implemented LSTM backbone model and trained the model against SPY data from January to May.
 - I also helped Ruipeng in integrating LSTM model into Strategy Studio by generating the Traced model path file
 - I developed Analysis & Visualization with Python to visualize various metrics for the strategies we implemented, and evaluated potential bug in Strategy Studio such as huge jump in PnL when the market closes
+- I developed intra day Profit and Loss calculation to eliminate the measurement of potential bugs from Strategy Studio.
 - I outlined the README and report documents for my team to fill in their parts
+- I created the final video
 
 
 2. **What did you learn as a result of doing your project?**
