@@ -413,10 +413,26 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 
 ### Ruipeng (Ray), Han
 1. **What did you specifically do individually for this project?**
+- I helpped setting up Pytorch in Strategy Studio environment, this includes retriving libraries (TorchLib, compiling source files, and developing a Pytorch program in C++.
+- Helped compiled trading strategies and provided a short simple example cpp executable that succesfully compiles and loads and inference a Pytorch model in Strategy Studio.
+- I was responsible for downloading a part of the tick data we use for Backtesting (Jan to Feb 2022).
+- I was responsible for taking other member's developed models trained in Python and implement the actual C++ strategy and ran backtesting in Strategy Studio.
+
 2. **What did you learn as a result of doing your project?**
+- I learned a lot about Pytorch's C++ distribution: how Pytorch's syntax looks like in C++, how to save and load a Pytorch model in C++, and how it integrates to Strategy Studio's interface.
+- I learned developing makefiles, Cmakes, Linux shells, and all kinds of system tasks during my research to load Pytorch model in Strategy Studio.
+- I learned how LSTM works for time-series based market data and its pros & cons.
+- I learned a lot about how backtesting works in C++, the type of tick feeds used, etc.
+
 3. **If you had a time machine and could go back to the beginning, what would you have done differently?**
+- I would definietly try doing RPC to load and run the Pytorch model, instead of spending tons of time (about 2-3 weeks on this) figuring out how to setup TorchLib in C++ locally. Using RPC may costs efficiency becuase it takes much longer time for the call to forward and return, but it would be much easier so I can help others develop the strategies.
+
 4. **If you were to continue working on this project, what would you continue to do to improve it, how, and why?**
+- I would continue to tune the parameters of existing LSTM model and run with bigger test set with various ticks (beyond SPY)
+- I would implement the RPC for Python model. I can start a Python sever locally, and inside the Strategy.cpp, I will directly pass the arguments (price, quantity, etc) to the local server hosting the Python model.
+
 5. **What advice do you offer to future students taking this course and working on their semester long project. Providing detailed thoughtful advice to future students will be weighed heavily in evaluating your responses.**
+- Begin your research early! Setting up the environment can be harder than you thought.
 
 ### Yihong, Jian
 
