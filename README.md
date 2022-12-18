@@ -23,7 +23,7 @@ We will implement HFT strategies that trade on real-world market data using prop
 - Analysis
   - Strategy Profit and Loss
   - Strategy output comparison
-- [Report](/Final Report.md) (inside `./docs`)
+- [Report](/FinalReport.md) (inside `./docs`)
 - [Video Link](https://uofi.box.com/s/yexq0kiet8z1xossiecjcre2a89hj7fv)
 
 ```bash
