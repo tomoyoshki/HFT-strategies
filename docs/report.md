@@ -364,6 +364,13 @@ x_\text{scaled} = {x - x_\text{min} \over x_\text{max} - x_\text{min}} * (1 - (-
 
 ##### C++ Strategy Implemetation Details
 
+Once we have the model trained in Python and Pytorch and saved as  `lstm.pt `, we will use it for our backtesting in Strategy Studio. We backtested the LSTM model using the SPY data from Jan 03 to Jun 30 (inclusive) of 2022.
+
+We performed three steps to implement the model in Strategy Studio:
+  1. We load the `lstm.pt` model upon initialization for the Strategy class. If there are any errors loading the model, output the error.
+  2. On each `onTrade()` eveent, we will pass the trade price, quantity, and other related data to the model, allow the model to run/inference, and retrieve the model's prediction for the next trade's price. 
+  3. Based on the result of the model, if the predicted price is higher than the current, actual price, then the Strategy will trigger a BUY action becuase the current price is underestimated according to the mode. Likewise, if the predicted price is lower than the current price, then the medel predicts the existing price is overestimated, so we trigger a SELL action.
+
 #### Results
 
 - We ran our LSTM strategy against SPY data from Jan 03 to June 30. 
@@ -459,22 +466,63 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 
 ### Ruipeng (Ray), Han
 1. **What did you specifically do individually for this project?**
+- I helpped setting up Pytorch in Strategy Studio environment, this includes retriving libraries (TorchLib, compiling source files, and developing a Pytorch program in C++.
+- Helped compiled trading strategies and provided a short simple example cpp executable that succesfully compiles and loads and inference a Pytorch model in Strategy Studio.
+- I was responsible for downloading a part of the tick data we use for Backtesting (Jan to Feb 2022).
+- I was responsible for taking other member's developed models trained in Python and implement the actual C++ strategy and ran backtesting in Strategy Studio.
+
 2. **What did you learn as a result of doing your project?**
+- I learned a lot about Pytorch's C++ distribution: how Pytorch's syntax looks like in C++, how to save and load a Pytorch model in C++, and how it integrates to Strategy Studio's interface.
+- I learned developing makefiles, Cmakes, Linux shells, and all kinds of system tasks during my research to load Pytorch model in Strategy Studio.
+- I learned how LSTM works for time-series based market data and its pros & cons.
+- I learned a lot about how backtesting works in C++, the type of tick feeds used, etc.
+
 3. **If you had a time machine and could go back to the beginning, what would you have done differently?**
+- I would definietly try doing RPC to load and run the Pytorch model, instead of spending tons of time (about 2-3 weeks on this) figuring out how to setup TorchLib in C++ locally. Using RPC may costs efficiency becuase it takes much longer time for the call to forward and return, but it would be much easier so I can help others develop the strategies.
+
 4. **If you were to continue working on this project, what would you continue to do to improve it, how, and why?**
+- I would continue to tune the parameters of existing LSTM model and run with bigger test set with various ticks (beyond SPY)
+- I would implement the RPC for Python model. I can start a Python sever locally, and inside the Strategy.cpp, I will directly pass the arguments (price, quantity, etc) to the local server hosting the Python model.
+
 5. **What advice do you offer to future students taking this course and working on their semester long project. Providing detailed thoughtful advice to future students will be weighed heavily in evaluating your responses.**
+- Understand the basics: Before diving into the more advanced concepts, make sure you have a solid foundation in the basics of trading and the types of data your strategy will be dealing with, such as market microstructure, order types, and risk management. This will help you better understand the strategies you're building and how they fit into the broader context of the financial markets.
+- Seek help when needed. Don't be afraid to ask for help if you're having trouble with your project. This course enforces everyone to have the same channel of communication: Discord. Your project memebers, classmates, professors are all there to hlep. They and other online resources can all be valuable sources of support and guidance.
+- Begin your research early! Setting up the environment can be harder than you thought.
 
 ### Yihong, Jian
 
 1. **What did you specifically do individually for this project?**
+
+- I researched on Kalman Filter library and resolved compile time issues.
+- I helped resolve KF Strategy OOM issues.
+- I resolved compiling and compatibility issue of PyTorch.
+- I implemented scratch KF Strategy and barebone PyTorch Strategy.
+- I supported LSTM model exporting.
+- I ran all backtesting result used in this repo on my computer.
+
 2. **What did you learn as a result of doing your project?**
+
+- Surprisingly, the most I learned was how to compile C++ code. For example, the difference between ```.a``` and ```.so``` files, compilation stage vs. linking stage, and etc.
+- I learned that CLRF causes countless issues.
+- I learned that a money making strategy is not easy to find. Even though our strategy was promising in the research stage, replicating performance in backtest is not easy.
+- I learned that even interpreting output is annoying. We had hard time understanding the jumps in PnL output and had to think of alterantives intepretations.
+
 3. **If you had a time machine and could go back to the beginning, what would you have done differently?**
+
+- Run more backtests. We started backtesting stage a bit too late, so we did not have enough time to fully understand our algo performance.
+
 4. **If you were to continue working on this project, what would you continue to do to improve it, how, and why?**
+
+- I first better interpret our backtest result files, then make adjustment on the strategies accordingly.
+- I would run more backtests.
+- I would write more robust/more complicated machine learning models, e.g. RL models with state trackers, since they have potentials to work better. 
+
 5. **What advice do you offer to future students taking this course and working on their semester long project. Providing detailed thoughtful advice to future students will be weighed heavily in evaluating your responses.**
 
-### Tomoyoshi (Tommy), Kimura (Project Leader)
+- Make sure the environment works. Try to run multiple passes with heavier load. We were inefficient in figuring how we should compile the code, who could run the backtest, what source limitation we had. Try to nail these before starting on the strategies as it will make sure everyone is on the same page.
+- Fail early. We are a bit lost in the middle when we sketched out everything. It was no until a later stage when we find out many non-trivial issues like jumps in PnL. We did not have sufficient time to fully understand backtester's behavior. Try to identify these issues early and patch them.
 
-copied from ie498 TOOD change stuff
+### Tomoyoshi (Tommy), Kimura (Project Leader)
 
 1. **What did you specifically do individually for this project?**
 
