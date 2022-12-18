@@ -550,7 +550,9 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 - I implemented LSTM backbone model and trained the model against SPY data from January to May.
 - I also helped Ruipeng in integrating LSTM model into Strategy Studio by generating the Traced model path file
 - I developed Analysis & Visualization with Python to visualize various metrics for the strategies we implemented, and evaluated potential bug in Strategy Studio such as huge jump in PnL when the market closes
+- I developed intra day Profit and Loss calculation to eliminate the measurement of potential bugs from Strategy Studio.
 - I outlined the README and report documents for my team to fill in their parts
+- I created the final video
 
 
 2. **What did you learn as a result of doing your project?**
