@@ -119,18 +119,46 @@ We further break down our project into four sections: data retrival and parsing,
 **Repository Layout**
 
 ```bash
-group_01_project
-└── analysis
-└── docs
-└── quant
+.
+├── README.md
+├── analysis
+│   ├── analysis_documentation.md
+│   ├── compare_strategy.py
+│   ├── main.py
+│   ├── sample_data
+│   ├── sample_main.py
+│   └── strategy_analysis.py
+├── assets
+├── docs
+│   ├── figs
+│   └── report.md
+├── get_torch.sh
+├── iexdownloaderparser
+├── quant
+│   ├── kalman
+│   │   ├── figures
+│   │   └── kalman_measure.py
+│   ├── quant_measure.md
+│   ├── requirements.txt
+│   └── risk_measure
+│       └── risk_measure.py
+├── requirements.txt
 └── strategies
-  ├── kalman_filter_strategy
-	  ├── KalmanFilterStrategy.cpp
-	  ├── KalmanFilterStrategy.h
-    ├── Makfile
-    ├── kalman_filter.cpp
-    ├── kalman_filter.h
-
+    ├── kalman_filter
+    │   ├── KalmanFilterStrategy.cpp
+    │   ├── KalmanFilterStrategy.h
+    │   ├── Makefile
+    │   ├── kalman_filter.cpp
+    │   └── kalman_filter.h
+    ├── lstm
+    │   ├── LSTMStrategy.cpp
+    │   ├── LSTMStrategy.h
+    │   ├── Makefile
+    │   └── lstm.ipynb
+    └── simple_torch
+        ├── Makefile
+        ├── TorchStrategy.cpp
+        └── TorchStrategy.h
 ```
 
 ## Usage:
@@ -345,20 +373,24 @@ We performed three steps to implement the model in Strategy Studio:
 
 #### Results
 
-**Profit and Loss**
-
-- The resulting of Profit and Loss over the span of 7 months is:
+- We ran our LSTM strategy against SPY data from Jan 03 to June 30. 
+<p align="center">
+  <img src="/assets/lstm_ss.png" />
+</p>
+- From the above figure, we have observed several jumps in PnL like those we have seen in the Kalman Filter based Strategy. Therefore we tested against the same approach generating intra day PnL. 
+- It is obvious that after May 13 that we see dramatic shift in PnL. It is an overfitting issues underlying LSTM strategy, and we hope to fix it in the future.
 <p align="center">
   <img src="/assets/lstm_intraday.png" />
 </p>
 
 ## Analysis
 
-### Interrpetation & Visualization Layout
+### Layout
 
 ```
 Analysis
 	├── compare_strategy.py
+	├── intra.ipynb
 	├── main.py
 	├── strategy_analysis.py
 ```
@@ -409,8 +441,15 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 
 ##### Compare Strategy
 
-- The strategy acts like a container that holds all the Strategy object we mentioned earlier. In this class, we could evaluate the performance of each strategy with each other, and output graph and table for traders to analyze each strategy. The measurement table for Swing between Apple and SPY could be an example, and another example is the evaluation of BLSF Strategy and Swing Strategy on SPY market data. 
-  <img src="./figs/Swing_BLSF_SPY.png" />
+- The strategy acts like a container that holds all the Strategy object we mentioned earlier. In this class, we could evaluate the performance of each strategy with each other, and output graph and table for traders to analyze each strategy. 
+- Here is a box chart comparison.
+<p align="center">
+  <img src="/assets/strategies_comparison.png" />
+</p>
+- Here is a measurement comparison.
+<p align="center">
+  <img src="/assets/strategy_stats.png" />
+</p>
 
 #### Interpretation & Visualization Usage
 
