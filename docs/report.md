@@ -338,6 +338,11 @@ x_\text{scaled} = {x - x_\text{min} \over x_\text{max} - x_\text{min}} * (1 - (-
 
 #### Results
 
+- We ran our LSTM strategy against SPY data from Jan 03 to June 30. 
+<p align="center">
+  <img src="/assets/lstm_ss.png" />
+</p>
+
 ## Analysis
 
 ### Interrpetation & Visualization Layout
