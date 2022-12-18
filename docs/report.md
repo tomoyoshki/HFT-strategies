@@ -336,7 +336,21 @@ x_\text{scaled} = {x - x_\text{min} \over x_\text{max} - x_\text{min}} * (1 - (-
 
 ##### C++ Strategy Implemetation Details
 
+Once we have the model trained in Python and Pytorch and saved as  `lstm.pt `, we will use it for our backtesting in Strategy Studio. We backtested the LSTM model using the SPY data from Jan 03 to Jun 30 (inclusive) of 2022.
+
+We performed three steps to implement the model in Strategy Studio:
+  1. We load the `lstm.pt` model upon initialization for the Strategy class. If there are any errors loading the model, output the error.
+  2. On each `onTrade()` eveent, we will pass the trade price, quantity, and other related data to the model, allow the model to run/inference, and retrieve the model's prediction for the next trade's price. 
+  3. Based on the result of the model, if the predicted price is higher than the current, actual price, then the Strategy will trigger a BUY action becuase the current price is underestimated according to the mode. Likewise, if the predicted price is lower than the current price, then the medel predicts the existing price is overestimated, so we trigger a SELL action.
+
 #### Results
+
+**Profit and Loss**
+
+- The resulting of Profit and Loss over the span of 7 months is:
+<p align="center">
+  <img src="/assets/lstm_intraday.png" />
+</p>
 
 ## Analysis
 
@@ -432,6 +446,8 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 - I would implement the RPC for Python model. I can start a Python sever locally, and inside the Strategy.cpp, I will directly pass the arguments (price, quantity, etc) to the local server hosting the Python model.
 
 5. **What advice do you offer to future students taking this course and working on their semester long project. Providing detailed thoughtful advice to future students will be weighed heavily in evaluating your responses.**
+- Understand the basics: Before diving into the more advanced concepts, make sure you have a solid foundation in the basics of trading and the types of data your strategy will be dealing with, such as market microstructure, order types, and risk management. This will help you better understand the strategies you're building and how they fit into the broader context of the financial markets.
+- Seek help when needed. Don't be afraid to ask for help if you're having trouble with your project. This course enforces everyone to have the same channel of communication: Discord. Your project memebers, classmates, professors are all there to hlep. They and other online resources can all be valuable sources of support and guidance.
 - Begin your research early! Setting up the environment can be harder than you thought.
 
 ### Yihong, Jian
@@ -468,8 +484,6 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 - Fail early. We are a bit lost in the middle when we sketched out everything. It was no until a later stage when we find out many non-trivial issues like jumps in PnL. We did not have sufficient time to fully understand backtester's behavior. Try to identify these issues early and patch them.
 
 ### Tomoyoshi (Tommy), Kimura (Project Leader)
-
-copied from ie498 TOOD change stuff
 
 1. **What did you specifically do individually for this project?**
 
