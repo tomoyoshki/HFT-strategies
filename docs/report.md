@@ -437,10 +437,35 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 ### Yihong, Jian
 
 1. **What did you specifically do individually for this project?**
+
+- I researched on Kalman Filter library and resolved compile time issues.
+- I helped resolve KF Strategy OOM issues.
+- I resolved compiling and compatibility issue of PyTorch.
+- I implemented scratch KF Strategy and barebone PyTorch Strategy.
+- I supported LSTM model exporting.
+- I ran all backtesting result used in this repo on my computer.
+
 2. **What did you learn as a result of doing your project?**
+
+- Surprisingly, the most I learned was how to compile C++ code. For example, the difference between ```.a``` and ```.so``` files, compilation stage vs. linking stage, and etc.
+- I learned that CLRF causes countless issues.
+- I learned that a money making strategy is not easy to find. Even though our strategy was promising in the research stage, replicating performance in backtest is not easy.
+- I learned that even interpreting output is annoying. We had hard time understanding the jumps in PnL output and had to think of alterantives intepretations.
+
 3. **If you had a time machine and could go back to the beginning, what would you have done differently?**
+
+- Run more backtests. We started backtesting stage a bit too late, so we did not have enough time to fully understand our algo performance.
+
 4. **If you were to continue working on this project, what would you continue to do to improve it, how, and why?**
+
+- I first better interpret our backtest result files, then make adjustment on the strategies accordingly.
+- I would run more backtests.
+- I would write more robust/more complicated machine learning models, e.g. RL models with state trackers, since they have potentials to work better. 
+
 5. **What advice do you offer to future students taking this course and working on their semester long project. Providing detailed thoughtful advice to future students will be weighed heavily in evaluating your responses.**
+
+- Make sure the environment works. Try to run multiple passes with heavier load. We were inefficient in figuring how we should compile the code, who could run the backtest, what source limitation we had. Try to nail these before starting on the strategies as it will make sure everyone is on the same page.
+- Fail early. We are a bit lost in the middle when we sketched out everything. It was no until a later stage when we find out many non-trivial issues like jumps in PnL. We did not have sufficient time to fully understand backtester's behavior. Try to identify these issues early and patch them.
 
 ### Tomoyoshi (Tommy), Kimura (Project Leader)
 
