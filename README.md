@@ -23,28 +23,31 @@ We will implement HFT strategies that trade on real-world market data using prop
 - Analysis
   - Strategy Profit and Loss
   - Strategy output comparison
-- [Report](/docs/report.md) (inside `./docs`)
+- [Report](/Final Report.md) (inside `./docs`)
 - [Video Link](https://uofi.box.com/s/yexq0kiet8z1xossiecjcre2a89hj7fv)
 
 ```bash
 .
+├── Final Report.md
 ├── README.md
 ├── analysis
 │   ├── analysis_documentation.md
 │   ├── compare_strategy.py
+│   ├── intra.ipynb
 │   ├── main.py
 │   ├── sample_data
+│   │   └── ...csv
 │   ├── sample_main.py
 │   └── strategy_analysis.py
 ├── assets
-├── docs
-│   ├── figs
-│   └── report.md
+│   └── ...png
+├── compile_and_backtest.sh
 ├── get_torch.sh
 ├── iexdownloaderparser
 ├── quant
 │   ├── kalman
 │   │   ├── figures
+│   │   │   └── ...png
 │   │   └── kalman_measure.py
 │   ├── quant_measure.md
 │   ├── requirements.txt
