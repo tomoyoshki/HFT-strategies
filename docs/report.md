@@ -26,7 +26,8 @@
 - Linkedin: linkedin[dot]com/in/tomoyoshi-kimura/
 
 **Kaiyuan, Luo**
-- TODO
+- Kaiyuan is a senior majoring in computer science at University of Illinois Urbana Champaign. He really loves solving challenging problems and provide different solutions that worth trying. He has experience in programming, mainly in Python and C++. He has multiple programming experience including designing algorithms to solve real world problems and structures that optimize memory usage and efficiency.
+- Email: kaiyuan8@illinois.edu
 
 
 ## Introduction
@@ -581,10 +582,35 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 ### Kaiyuan, Luo
 
 1. **What did you specifically do individually for this project?**
+- I have reasearched difference approaches for algorithmic trading using artificial intelligence
+- I have implemented the basic environment and agent for reinforcement learning model
+- I have trained and tested basic RNN model using order data and self sefined label
+- I have improved the RNN model to reach over 53% accuracy in giving predictions
+- I have coded entire routine for uploading files, training, testing, and downloading model and resuing model.
+
 2. **What did you learn as a result of doing your project?**
+- I learned different ways of using machine learning to support algorithmic trading
+- I learned producing an idea is different than making it to reality considering hardware and software difficulties
+- I learned communication is the key to success in solving problems as a team, especially coordination is required
+- I learned how different order data is send and proccessed to make trade possible
+- I am more confortable reading order book and performing analysis on market data
+
 3. **If you had a time machine and could go back to the beginning, what would you have done differently?**
+- I would have started early and test different machine learning models
+- I should go back and set a baseline before the experiment to avoid time waste in improving model on a scale of 2% - 5% when the highest accuracy is just over 50%
+- I should start testing on my end and switch direction when I see fit instead of wasting time on testing the model itself
+
 4. **If you were to continue working on this project, what would you continue to do to improve it, how, and why?**
+- I would keep investigating on the model I thought would fit with RNN and reinforcement learning along side of LSTM stratey. 
+- I would spend more time analyzing the data and give better labels to help training the model and provide more meaning result. 
+- I would also want to add more outputs to the model including the volume to buy/sell, current opining long/short, and price for the order. 
+- Due to programming language differences, reinforcement learning cannot be deployed on c++ side. I could speed more time coding on the c++ side to test out real gain/loss with backtest instead of test purely on python.
+
 5. **What advice do you offer to future students taking this course and working on their semester long project. Providing detailed thoughtful advice to future students will be weighed heavily in evaluating your responses.**
+- Report your progress more frequently, do not wait untill the idea is dead or the product finally carries out. It is important to report your progress as you develope the program.
+- Communicate with teammates on what is the expectation. For this project, a ML model with higher than half-half accuracy would result in a gain for most of the time. Do not spend a long time struggling improving the model to reach over 90% accuracy like other machine learning projects.
+- Write a milestone and follow it. It is always a good idea to set a timeline for each milestone and follow it. If there is any difficulty, do not hesitate to communicate with your teammates and find an alternative path.
+- Make sure you can run the program first before start implementing the strategy. Sometimes, it is frustrating to know the project you were working on for weeks cannot deploy on the testing environment. 
 
 
 
