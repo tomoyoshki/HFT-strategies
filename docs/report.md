@@ -378,11 +378,12 @@ x_\text{scaled} = {x - x_\text{min} \over x_\text{max} - x_\text{min}} * (1 - (-
 
 ## Analysis
 
-### Interrpetation & Visualization Layout
+### Layout
 
 ```
 Analysis
 	├── compare_strategy.py
+	├── intra.ipynb
 	├── main.py
 	├── strategy_analysis.py
 ```
@@ -433,8 +434,15 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 
 ##### Compare Strategy
 
-- The strategy acts like a container that holds all the Strategy object we mentioned earlier. In this class, we could evaluate the performance of each strategy with each other, and output graph and table for traders to analyze each strategy. The measurement table for Swing between Apple and SPY could be an example, and another example is the evaluation of BLSF Strategy and Swing Strategy on SPY market data. 
-  <img src="./figs/Swing_BLSF_SPY.png" />
+- The strategy acts like a container that holds all the Strategy object we mentioned earlier. In this class, we could evaluate the performance of each strategy with each other, and output graph and table for traders to analyze each strategy. 
+- Here is a box chart comparison.
+<p align="center">
+  <img src="/assets/strategies_comparison.png" />
+</p>
+- Here is a measurement comparison.
+<p align="center">
+  <img src="/assets/strategies_stats.png" />
+</p>
 
 #### Interpretation & Visualization Usage
 
