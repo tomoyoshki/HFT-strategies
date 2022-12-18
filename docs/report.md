@@ -441,7 +441,7 @@ There are mainly two classes: `StrategyAnalysis` and `CompareStrategy` . We also
 </p>
 - Here is a measurement comparison.
 <p align="center">
-  <img src="/assets/strategies_stats.png" />
+  <img src="/assets/strategy_stats.png" />
 </p>
 
 #### Interpretation & Visualization Usage
