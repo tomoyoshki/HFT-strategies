@@ -187,27 +187,27 @@ pip install -r requirements.txt
 
   - Maximum Profit and Loss
 
-    <img src="./docs/figs/max_pnl.png" />
+    <img src="/assets/max_pnl.png" />
 
   - Minimum Profit and Loss
 
-    <img src="./docs/figs/min_pnl.png" />
+    <img src="/assets/min_pnl.png" />
 
   - Net Profit and Loss
 
-    <img src="./docs/figs/net_pnl.png" />
+    <img src="/assets/net_pnl.png" />
 
   - Cumulative Returns
 
-    <img src="./docs/figs/cumulative_pnl.png" />
+    <img src="/assets/cumulative_pnl.png" />
 
   - Sharpe Ratio
 
-    <img src="./docs/figs/sharpe.png" />
+    <img src="/assets/sharpe.png" />
 
   - Max Drowndown
 
-    <img src="./docs/figs/max_drown.png" />
+    <img src="/assets/max_drown.png" />
 
 
 - For visualization, we would like to visualize the Profit and Loss against Time, as well as a comparison with the Tick data.
