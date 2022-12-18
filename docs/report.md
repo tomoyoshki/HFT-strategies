@@ -119,18 +119,46 @@ We further break down our project into four sections: data retrival and parsing,
 **Repository Layout**
 
 ```bash
-group_01_project
-└── analysis
-└── docs
-└── quant
+.
+├── README.md
+├── analysis
+│   ├── analysis_documentation.md
+│   ├── compare_strategy.py
+│   ├── main.py
+│   ├── sample_data
+│   ├── sample_main.py
+│   └── strategy_analysis.py
+├── assets
+├── docs
+│   ├── figs
+│   └── report.md
+├── get_torch.sh
+├── iexdownloaderparser
+├── quant
+│   ├── kalman
+│   │   ├── figures
+│   │   └── kalman_measure.py
+│   ├── quant_measure.md
+│   ├── requirements.txt
+│   └── risk_measure
+│       └── risk_measure.py
+├── requirements.txt
 └── strategies
-  ├── kalman_filter_strategy
-	  ├── KalmanFilterStrategy.cpp
-	  ├── KalmanFilterStrategy.h
-    ├── Makfile
-    ├── kalman_filter.cpp
-    ├── kalman_filter.h
-
+    ├── kalman_filter
+    │   ├── KalmanFilterStrategy.cpp
+    │   ├── KalmanFilterStrategy.h
+    │   ├── Makefile
+    │   ├── kalman_filter.cpp
+    │   └── kalman_filter.h
+    ├── lstm
+    │   ├── LSTMStrategy.cpp
+    │   ├── LSTMStrategy.h
+    │   ├── Makefile
+    │   └── lstm.ipynb
+    └── simple_torch
+        ├── Makefile
+        ├── TorchStrategy.cpp
+        └── TorchStrategy.h
 ```
 
 ## Usage:
@@ -341,6 +369,11 @@ x_\text{scaled} = {x - x_\text{min} \over x_\text{max} - x_\text{min}} * (1 - (-
 - We ran our LSTM strategy against SPY data from Jan 03 to June 30. 
 <p align="center">
   <img src="/assets/lstm_ss.png" />
+</p>
+- From the above figure, we have observed several jumps in PnL like those we have seen in the Kalman Filter based Strategy. Therefore we tested against the same approach generating intra day PnL. 
+- It is obvious that after May 13 that we see dramatic shift in PnL. It is an overfitting issues underlying LSTM strategy, and we hope to fix it in the future.
+<p align="center">
+  <img src="/assets/lstm_intraday.png" />
 </p>
 
 ## Analysis
