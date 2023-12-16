@@ -1,4 +1,4 @@
-# FIN 556 Group 1 Project
+# High Frequency Trading Strategies
 
 ## Team Members
 
